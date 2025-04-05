@@ -33,6 +33,8 @@ export default class Creature extends PhysicsObject {
 
 		this.static = false;
 		this.active = true;
+
+		this.setPosition(x, y);
 	}
 
 	update(dt) {

@@ -18,17 +18,21 @@ export default class Player extends Creature {
 		this.static = false;
 		this.active = true;
 
+		// Movement
 		this.buttons = {
 			up: false,
 			down: false,
 			left: false,
 			right: false,
 		};
+		this.speed = 2*CELLSIZE;
 
+		// Graphics
 		this.image = GNOME_IMAGE;
 		this.animation = new Animation(GNOME_SPRITE, 0, 0);
 
-		this.speed = 2*CELLSIZE;
+		// Collectibles
+		this.coins = 0;
 
 		this.setPosition(x, y);
 	}
@@ -56,7 +60,6 @@ export default class Player extends Creature {
 	draw() {
 		Draw.setColor(255, 255, 255, 1.0);
 		Draw.image(this.image, this.animation.getFrame(), this.x, this.y, 0, 1, 1, 0.5, 0.5);
-		//Draw.rectangle(this.x-this.size/2, this.y-this.size/2, this.size, this.size);
 	}
 
 	keyPress(key) {
@@ -91,5 +94,22 @@ export default class Player extends Creature {
 				this.buttons.right = false;
 				break;
 		}
+	}
+
+	collide(name, obj) {
+		console.log(name);
+		if (name == "Wall") {
+			return true;
+		}
+		if (name == "Coin") {
+			this.collectCoin();
+			obj.destroy();
+			return false;
+		}
+		return false;
+	}
+
+	collectCoin() {
+		this.coins++;
 	}
 }

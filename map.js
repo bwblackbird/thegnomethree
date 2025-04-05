@@ -1,5 +1,6 @@
-import Wall from "./objects/wall.js";
 import { CELLSIZE, MAP_COLUMN_WIDTH, MAP_ROW_HEIGHT, HEX_SPRITE_SCALE } from "./config.js";
+import Wall from "./objects/wall.js";
+import Coin from "./objects/coin.js";
 
 import { Draw } from "./engine/canvas.js";
 import { HEXAGON_IMAGE, HEXAGON_SPRITE } from "./assets.js";
@@ -22,28 +23,44 @@ export class Map {
 			this.map[y] = new Array(w);
 			for (let x = 0; x < w; x++) {
 				this.map[y][x] = [
-					Math.round(Math.random()), // Tile
-					0 // Overlay
+					0, // Tile ID
+					0 // Object ID
 				];
+
+				// Randomly generate walls
+				if (Math.random() < 0.4) {
+					this.map[y][x][0] = 1; // Wall tile
+				} else {
+					// Randomly spawn coins
+					if (Math.random() < 0.05) {
+						this.map[y][x][1] = 1; // Coin object
+					}
+				}
+
 				this.updateCell(x, y); // Spawn wall object
 			}
 		}
 	}
 
 	updateCell(x, y) {
-		let id = this.getCell(x, y, 0);
-		if (id == -1) {
-			return; // Out of bounds
-		}
-		if (id == 0) {
-			return; // No wall
-		}
+		// Make solid walls
+		let tileId = this.getCell(x, y, 0);
+		
 		let tileX = x * MAP_COLUMN_WIDTH;
-		let tileY = y * MAP_ROW_HEIGHT
+		let tileY = y * MAP_ROW_HEIGHT;
 		if (x % 2 == 0) {
 			tileY += MAP_ROW_HEIGHT / 2;
 		}
-		this.world.spawnObject("Wall", new Wall(this.world.world, tileX, tileY));
+
+		if (tileId === 1) {
+			this.world.spawnObject("Wall", new Wall(this.world.world, tileX, tileY));
+		}
+
+		// Spawn objects
+		let objectId = this.getCell(x, y, 1);
+		if (objectId === 1) {
+			this.world.spawnObject("Coin", new Coin(this.world.world, tileX, tileY));
+		}
 	};
 
 	setCell(x, y, i) {
