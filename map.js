@@ -30,20 +30,6 @@ export class Map {
 					// 0 // Light level
 				];
 
-				// Randomly generate walls
-				if (Math.random() < 0.4) {
-					this.map[y][x][0] = 1; // Wall tile
-				} else {
-					// Randomly spawn coins
-					if (Math.random() < 0.02) {
-						this.map[y][x][1] = 1; // Coin object
-					}
-					
-					// Randomly spawn trolls
-					if (Math.random() < 0.03) {
-						this.map[y][x][1] = 2; // Troll object
-					}
-				}
 			}
 		}
 		
