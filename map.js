@@ -2,6 +2,7 @@ import { CELLSIZE, MAP_COLUMN_WIDTH, MAP_ROW_HEIGHT, HEX_SPRITE_SCALE } from "./
 import Wall from "./objects/wall.js";
 import Coin from "./objects/coin.js";
 import Troll from "./objects/troll.js";
+import Exit from "./objects/exit.js";
 
 import { Draw } from "./engine/canvas.js";
 import { HEXAGON_IMAGE, HEXAGON_SPRITE } from "./assets.js";
@@ -25,7 +26,8 @@ export class Map {
 			for (let x = 0; x < w; x++) {
 				this.map[y][x] = [
 					0, // Tile ID
-					0 // Object ID
+					0, // Object ID
+					// 0 // Light level
 				];
 
 				// Randomly generate walls
@@ -44,6 +46,13 @@ export class Map {
 				}
 			}
 		}
+		
+		// Randomly spawn exit
+		let exitX = Math.floor(Math.random() * w);
+		let exitY = Math.floor(Math.random() * h);
+		this.setCell(exitX, exitY, 1, 3); // Exit object
+		this.setCell(exitX, exitY, 0, 0); // No wall tile
+		console.log("Exit spawned at: ", exitX, exitY);
 	}
 
 	createMapObjects(player) {
@@ -76,21 +85,24 @@ export class Map {
 		} else if (objectId === 2) {
 			// Troll
 			this.world.spawnObject("Troll", new Troll(this.world.world, tileX, tileY, this, player));
+		} else if (objectId === 3) {
+			// Exit
+			this.world.spawnObject("Exit", new Exit(this.world.world, tileX, tileY));
 		}
 	};
 
-	setCell(x, y, i) {
+	setCell(x, y, layer, id) {
 		if (x < 0 || x >= this.w || y < 0 || y >= this.h) {
 			return; // Out of bounds
 		}
-		this.map[y][x][i] = 1;
+		this.map[y][x][layer] = id;
 	}
 
-	getCell(x, y, i) {
+	getCell(x, y, layer) {
 		if (x < 0 || x >= this.w || y < 0 || y >= this.h) {
 			return -1; // Out of bounds
 		}
-		return this.map[y][x][i];
+		return this.map[y][x][layer];
 	}
 
 	draw(camera) {
@@ -108,7 +120,11 @@ export class Map {
 					tileY += MAP_ROW_HEIGHT / 2;
 				}
 				let tileId = this.getCell(x, y, 0);
+				let light = this.getCell(x, y, 2);
+				Draw.setColor(255, 255, 255, 1.0);
 				Draw.image(HEXAGON_IMAGE, HEXAGON_SPRITE.getFrame(tileId, 0), tileX, tileY, 0, HEX_SPRITE_SCALE,HEX_SPRITE_SCALE, 0.5,0.5);
+				// Draw.setColor(0, 0, 0, (1-light)*0.4);
+				// Draw.rectangle(tileX-MAP_COLUMN_WIDTH/2, tileY-MAP_ROW_HEIGHT/2, MAP_ROW_HEIGHT, MAP_ROW_HEIGHT);
 			}
 		}
 	}
@@ -137,5 +153,17 @@ export class Map {
 			}
 		}
 		return -1; // No wall found
+	}
+
+	updateLight(lightSources) {
+		for (let lighti = 0; lighti < lightSources.length; lighti++) {
+			let lightSource = lightSources[lighti];
+			let tileX = Math.floor(lightSource.x / MAP_COLUMN_WIDTH);
+			let tileY = Math.floor(lightSource.y / MAP_ROW_HEIGHT);
+			if (tileX < 0 || tileX >= this.w || tileY < 0 || tileY >= this.h) {
+				continue; // Out of bounds
+			}
+			this.setCell(tileX, tileY, 2, lightSource.light);
+		}
 	}
 }

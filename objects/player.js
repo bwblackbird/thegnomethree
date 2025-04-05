@@ -31,6 +31,8 @@ export default class Player extends Creature {
 		this.image = GNOME_IMAGE;
 		this.animation = new Animation(GNOME_SPRITE, 0, 0);
 
+		this.light = 8;
+
 		// Collectibles
 		this.coins = 0;
 		this.totalHealth = 3;
@@ -115,6 +117,9 @@ export default class Player extends Creature {
 			return false;
 		}
 		if (name = "Troll") {
+			return true;
+		}
+		if (name == "Exit") {
 			return true;
 		}
 		return false;

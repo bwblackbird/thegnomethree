@@ -44,6 +44,8 @@ export default class Troll extends Creature {
 		this.image = TROLL_IMAGE;
 		this.animation = new Animation(TROLL_SPRITE, 0, 0);
 
+		this.light = 3;
+
 		this.setPosition(x, y);
 	}
 
