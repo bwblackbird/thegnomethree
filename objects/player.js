@@ -1,7 +1,7 @@
 import PhysicsObject from './object.js';
 import Shape from '../engine/shape.js';
 import { Draw } from '../engine/canvas.js';
-import { CELLSIZE, PLAYER_SIZE } from "../config.js";
+import { CELLSIZE, PLAYER_SIZE, IMAGE_SCALE } from "../config.js";
 
 import { GNOME_IMAGE, GNOME_SPRITE } from '../assets.js';
 import { Animation } from '../engine/sprite.js';
@@ -33,6 +33,8 @@ export default class Player extends Creature {
 
 		this.light = 8;
 
+		this.angle = 0;
+
 		// Collectibles
 		this.coins = 0;
 		this.totalHealth = 3;
@@ -51,26 +53,51 @@ export default class Player extends Creature {
 
 		let sx = 0
 		let sy = 0
-		if (this.buttons.up) {
-			sy -= 1
-		}
-		if (this.buttons.down) {
-			sy += 1
-		}
 		if (this.buttons.left) {
+			this.animation.setFrame(null, 1);
 			sx -= 1
 		}
 		if (this.buttons.right) {
+			this.animation.setFrame(null, 1);
 			sx += 1
+		}
+		if (this.buttons.up) {
+			this.animation.setFrame(null, 2);
+			sy -= 1
+		}
+		if (this.buttons.down) {
+			this.animation.setFrame(null, 0);
+			sy += 1
 		}
 		
 		this.sx = sx * this.speed;
 		this.sy = sy * this.speed;
+
+		if (!(this.sx == 0 && this.sy == 0)) {
+			this.angle = Math.atan2(this.sy, this.sx);
+		}
 	}
 
 	draw() {
 		Draw.setColor(255, 255, 255, 1.0);
-		Draw.image(this.image, this.animation.getFrame(), this.x, this.y, 0, 1, 1, 0.5, 0.5);
+
+		let flip = 1;
+
+		if (this.buttons.left) {
+			this.animation.setFrame(null, 1);
+			flip = -1;
+		}
+		if (this.buttons.right) {
+			this.animation.setFrame(null, 1);
+		}
+		if (this.buttons.up) {
+			this.animation.setFrame(null, 2);
+		}
+		if (this.buttons.down) {
+			this.animation.setFrame(null, 0);
+		}
+
+		Draw.image(this.image, this.animation.getFrame(), this.x, this.y, 0, IMAGE_SCALE*flip, IMAGE_SCALE, 0.5, 0.7);
 	}
 
 	keyPress(key) {
