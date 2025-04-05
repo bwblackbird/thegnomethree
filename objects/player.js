@@ -41,6 +41,10 @@ export default class Player extends Creature {
 		this.health = this.totalHealth;
 		this.dead = false;
 
+		// Callbacks
+		this.winCallback = null;
+		this.loseCallback = null;
+
 		this.setPosition(x, y);
 	}
 
@@ -114,6 +118,12 @@ export default class Player extends Creature {
 			case "ArrowRight":
 				this.buttons.right = true;
 				break;
+			case "0":
+				this.hurt(1);
+				break;
+			case "9":
+				this.exit();
+				break;
 		}
 	}
 
@@ -143,10 +153,11 @@ export default class Player extends Creature {
 			obj.destroy();
 			return false;
 		}
-		if (name = "Troll") {
+		if (name == "Troll") {
 			return true;
 		}
 		if (name == "Exit") {
+			this.exit();
 			return true;
 		}
 		return false;
@@ -159,7 +170,22 @@ export default class Player extends Creature {
 	hurt(damage) {
 		this.health -= damage;
 		if (this.health <= 0) {
-			this.dead = true;
+			this.die();
+		}
+	}
+
+	die() {
+		console.log("Player died");
+		this.dead = true;
+		if (this.loseCallback) {
+			this.loseCallback(this);
+		}
+	}
+
+	exit() {
+		console.log("Player used exit");
+		if (this.winCallback) {
+			this.winCallback(this);
 		}
 	}
 }

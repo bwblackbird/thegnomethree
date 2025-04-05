@@ -37,7 +37,9 @@ export class Map {
 		let exitX = Math.floor(Math.random() * w);
 		let exitY = Math.floor(Math.random() * h);
 		this.setCell(exitX, exitY, 1, 3); // Exit object
-		this.setCell(exitX, exitY, 0, 0); // No wall tile
+		if (this.setCell(exitX, exitY, 0, 0) === false) { // No wall tile
+			console.log("Could not erase wall for exit?");
+		}
 		console.log("Exit spawned at: ", exitX, exitY);
 	}
 
@@ -79,7 +81,7 @@ export class Map {
 
 	setCell(x, y, layer, id) {
 		if (x < 0 || x >= this.w || y < 0 || y >= this.h) {
-			return; // Out of bounds
+			return false; // Out of bounds
 		}
 		this.map[y][x][layer] = id;
 	}

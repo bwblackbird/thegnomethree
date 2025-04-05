@@ -4,7 +4,10 @@ import { CELLSIZE, LEVEL_WIDTH, LEVEL_HEIGHT, IMAGE_SCALE } from "./config.js";
 import { Map } from "./map.js";
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from "./config.js";
 import { Camera } from "./camera.js";
+import StateManager from './engine/state.js';
 import { generateRandomLevel} from "./randomlevel.js";
+import { Win } from "./win.js";
+import { Lose } from "./lose.js";
 
 import { HUD_FONT, COIN_IMAGE, COIN_SPRITE, HEART_IMAGE, HEART_SPRITE } from "./assets.js";
 
@@ -17,6 +20,8 @@ class GameClass {
 
 	load() {
 		this.level = 1;
+
+		this.time = 0; // Total time played
 
 		this.totalHearts = 3;
 		this.hearts = this.totalHearts;
@@ -46,6 +51,8 @@ class GameClass {
 		this.player = this.spawnObject("Player", new Player(this.world, this.map.pixelWidth/2, this.map.pixelHeight/2));//levelWidth*CELLSIZE/2, levelHeight*CELLSIZE/2));
 		this.player.totalHealth = this.totalHearts;
 		this.player.health = this.player.totalHealth;
+		this.player.winCallback = this.nextLevel.bind(this);
+		this.player.loseCallback = this.lose.bind(this);
 
 		this.map.createMapObjects(this.player);
 
@@ -65,6 +72,8 @@ class GameClass {
 	}
 
 	update(dt) {
+		this.time += dt;
+
 		for (const [name, objList] of Object.entries(this.objects)) {
 			let keysToDelete;
 			for (const [id, obj] of Object.entries(objList)) {
@@ -152,6 +161,20 @@ class GameClass {
 
 	keyRelease(k) {
 		this.player.keyRelease(k);
+	}
+
+	nextLevel() {
+		this.level++;
+
+		if (this.level > 10) {
+			StateManager.setState(Win, this.time);
+		} else {
+			this.start();
+		}
+	}
+
+	lose() {
+		StateManager.setState(Lose, this.level);
 	}
 }
 
