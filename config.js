@@ -7,8 +7,8 @@ export const CELLSIZE = 180; // Vertical size of each hexagon in the map
 export const MAP_ROW_HEIGHT = CELLSIZE; // Row spacing
 export const MAP_COLUMN_WIDTH = (Math.sqrt(3) * CELLSIZE) / 2;; // Column spacing
 
-export const HEX_SPRITE_WIDTH = CELLSIZE; // Width of the hexagon sprite
-export const HEX_SPRITE_HEIGHT = CELLSIZE; // Height of the hexagon sprite
+export const HEX_SPRITE_WIDTH = 54; // Width of the hexagon sprite
+export const HEX_SPRITE_HEIGHT = 45; // Height of the hexagon sprite
 export const HEX_SPRITE_SCALE = 3.0; // Scale of the hexagon sprite
 
 // Level //
