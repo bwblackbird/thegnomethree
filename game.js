@@ -1,9 +1,11 @@
 import { SpatialHash, updatePhysics, drawPhysics } from "./engine/physics.js";
 import { Draw } from "./engine/canvas.js";
-import { CELLSIZE, LEVEL_WIDTH, LEVEL_HEIGHT } from "./config.js";
+import { CELLSIZE, LEVEL_WIDTH, LEVEL_HEIGHT, IMAGE_SCALE } from "./config.js";
 import { Map } from "./map.js";
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from "./config.js";
 import { Camera } from "./camera.js";
+
+import { HUD_FONT, COIN_IMAGE, COIN_SPRITE, HEART_IMAGE, HEART_SPRITE } from "./assets.js";
 
 import Player from "./objects/player.js";
 
@@ -13,6 +15,8 @@ class GameClass {
 	};
 
 	load() {
+		this.level = 1;
+
 		this.start();
 	}
 
@@ -100,7 +104,22 @@ class GameClass {
 		Draw.pop();
 		
 		// DEBUG
-		drawPhysics(Draw, this.objects, this.world, -this.camera.x, -this.camera.y);
+		//drawPhysics(Draw, this.objects, this.world, -this.camera.x, -this.camera.y);
+
+		// HUD
+		Draw.setColor(255, 255, 255, 1.0);
+		Draw.setFont(HUD_FONT, 10);
+		Draw.text(`X ${this.player.coins}`, SCREEN_WIDTH - 120, 70);
+		Draw.image(COIN_IMAGE, COIN_SPRITE.getFrame(0,0), SCREEN_WIDTH - 160, 70, 0, IMAGE_SCALE, IMAGE_SCALE, 0.5, 0.75);
+
+		for (let heart = 0; heart < this.player.totalHealth; heart++) {
+			let frame = HEART_SPRITE.getFrame(0,0);
+			if (heart >= this.player.health) {
+				frame = HEART_SPRITE.getFrame(1,0);
+			}
+			console.log("get");
+			Draw.image(HEART_IMAGE, frame, 70 + heart*70, 70, 0, IMAGE_SCALE, IMAGE_SCALE, 0.5, 0.75);
+		}
 	}
 
 	keyPress(k) {

@@ -131,10 +131,8 @@ export class Map {
 			if (tileX < 0 || tileX >= this.w || tileY < 0 || tileY >= this.h) {
 				return -1; // Out of bounds
 			}
-			console.log(tileX, tileY);
 			let tileId = this.getCell(tileX, tileY, 0);
 			if (tileId === 1) {
-				console.log(x, y, tx, ty, steps, stepX, stepY);
 				return [tileX, tileY]; // Wall found
 			}
 		}

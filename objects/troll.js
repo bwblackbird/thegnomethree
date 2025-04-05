@@ -24,7 +24,7 @@ export default class Troll extends Creature {
 		this.speed = 1.2*CELLSIZE;
 		this.target = target;
 		this.chaseDist = 5*CELLSIZE;
-		this.hitDist = 1*CELLSIZE;
+		this.hitDist = 0.8*CELLSIZE;
 
 		this.oldTileX = Math.floor(this.x / MAP_COLUMN_WIDTH);
 		this.oldTileY = Math.floor(this.y / MAP_ROW_HEIGHT);
@@ -50,7 +50,7 @@ export default class Troll extends Creature {
 	update(dt) {
 		// Chase target (Player)
 		let canChase = false;
-		if (this.target) {
+		if (this.target && !this.target.dead) {
 			let tx = this.target.x;
 			let ty = this.target.y;
 			let dx = tx - this.x;

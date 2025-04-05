@@ -33,13 +33,20 @@ export default class Player extends Creature {
 
 		// Collectibles
 		this.coins = 0;
-		this.health = 3;
+		this.totalHealth = 3;
+		this.health = this.totalHealth;
 		this.dead = false;
 
 		this.setPosition(x, y);
 	}
 
 	update(dt) {
+		if (this.dead) {
+			this.sx = 0;
+			this.sy = 0;
+			return;
+		}
+
 		let sx = 0
 		let sy = 0
 		if (this.buttons.up) {
