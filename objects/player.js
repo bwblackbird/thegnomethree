@@ -1,7 +1,7 @@
 import PhysicsObject from './object.js';
 import Shape from '../engine/shape.js';
 import { Draw } from '../engine/canvas.js';
-import { CELLSIZE, PLAYER_SIZE, IMAGE_SCALE } from "../config.js";
+import { CELLSIZE, PLAYER_SIZE, IMAGE_SCALE, MAP_COLUMN_WIDTH, MAP_ROW_HEIGHT, LAVA_HIT_COOL_DOWN } from "../config.js";
 
 import { GNOME_IMAGE, GNOME_SPRITE } from '../assets.js';
 import { Animation } from '../engine/sprite.js';
@@ -9,7 +9,7 @@ import { Animation } from '../engine/sprite.js';
 import Creature from './creature.js';
 
 export default class Player extends Creature {
-	constructor(spatialHash, x, y) {
+	constructor(spatialHash, x, y, map) {
 		super(spatialHash, x, y, PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE/3);
 		this.size = PLAYER_SIZE;
 		this.x = x;
@@ -26,6 +26,10 @@ export default class Player extends Creature {
 			right: false,
 		};
 		this.speed = 2*CELLSIZE;
+
+		this.map = map;
+		this.lavaHitTimer = 0;
+		this.lavaHitTime = LAVA_HIT_COOL_DOWN;
 
 		// Graphics
 		this.image = GNOME_IMAGE;
@@ -79,6 +83,22 @@ export default class Player extends Creature {
 
 		if (!(this.sx == 0 && this.sy == 0)) {
 			this.angle = Math.atan2(this.sy, this.sx);
+		}
+
+		// get current tile
+		let tileX = Math.floor((this.x + MAP_COLUMN_WIDTH/2) / MAP_COLUMN_WIDTH);
+		let tileY = Math.floor((this.y + MAP_ROW_HEIGHT/2) / MAP_ROW_HEIGHT);
+
+		let tile = this.map.getCell(tileX, tileY, 0);
+		if (tile == 3 || tile == 4 || tile == 5) {
+			// Lava
+			this.lavaHitTimer -= dt;
+			if (this.lavaHitTimer <= 0) {
+				this.lavaHitTimer = this.lavaHitTime;
+				this.hurt(1);
+			}
+		} else {
+			this.lavaHitTimer = 0;
 		}
 	}
 

@@ -48,7 +48,7 @@ class GameClass {
 
 		generateRandomLevel(this.map);
 
-		this.player = this.spawnObject("Player", new Player(this.world, this.map.pixelWidth/2, this.map.pixelHeight/2));//levelWidth*CELLSIZE/2, levelHeight*CELLSIZE/2));
+		this.player = this.spawnObject("Player", new Player(this.world, this.map.pixelWidth/2, this.map.pixelHeight/2, this.map));//levelWidth*CELLSIZE/2, levelHeight*CELLSIZE/2));
 		this.player.totalHealth = this.totalHearts;
 		this.player.health = this.player.totalHealth;
 		this.player.winCallback = this.nextLevel.bind(this);
