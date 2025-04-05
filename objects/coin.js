@@ -1,38 +1,33 @@
 import PhysicsObject from './object.js';
 import Shape from '../engine/shape.js';
+import { Draw } from '../engine/canvas.js';
+import { COIN_SIZE } from '../config.js';
 
-export default class Creature extends PhysicsObject {
-	constructor(spatialHash, x, y, w, h, bevel) {
+import { COIN_IMAGE, COIN_SPRITE } from '../assets.js';
+import { Animation } from '../engine/sprite.js';
+
+export default class Coin extends PhysicsObject {
+	constructor(spatialHash, x, y) {
 		super(spatialHash, x, y);
 		
 		this.x = x;
 		this.y = y;
-		this.w = w;
-		this.h = h;
+		this.size = COIN_SIZE;
 
-		// bevel hitbox so you slide into doorways
-		if (bevel !== 0) {
-			this.shape = new Shape(
-				-this.w/2, -this.h/2+bevel,
-				-this.w/2+bevel, -this.h/2,
-				this.w/2-bevel, -this.h/2,
-				this.w/2, -this.h/2+bevel,
-				this.w/2, this.h/2-bevel,
-				this.w/2-bevel, this.h/2,
-				-this.w/2+bevel, this.h/2,
-				-this.w/2, this.h/2-bevel
-			)
-		} else {
-			this.shape = new Shape(
-				-this.w/2, -this.h/2,
-				-this.w/2, this.h/2,
-				this.w/2, this.h/2,
-				this.w/2, -this.h/2
-			)
-		}
+		this.shape = new Shape(
+			-COIN_SIZE / 2, -COIN_SIZE / 2,
+			COIN_SIZE / 2, -COIN_SIZE / 2,
+			COIN_SIZE / 2, COIN_SIZE / 2,
+			-COIN_SIZE / 2, COIN_SIZE / 2
+		)
 
-		this.static = false;
+		this.static = true;
 		this.active = true;
+
+		this.image = COIN_IMAGE;
+		this.animation = new Animation(COIN_SPRITE, 0, 0);
+
+		this.setPosition(x, y);
 	}
 
 	update(dt) {
@@ -40,13 +35,11 @@ export default class Creature extends PhysicsObject {
 	}
 
 	draw() {
-
+		Draw.setColor(255, 255, 255, 1.0);
+		Draw.image(this.image, this.animation.getFrame(), this.x, this.y, 0, 1, 1, 0.5, 0.5);
 	}
 
 	collide(name, obj) {
-		if (name == "Wall") {
-			return true;
-		}
-		return false;
+		return true;
 	}
 }

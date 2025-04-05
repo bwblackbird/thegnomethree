@@ -9,5 +9,6 @@ export const ctx = canvas.getContext("2d");
 
 canvas.width = SCREEN_WIDTH;
 canvas.height = SCREEN_HEIGHT;
+ctx.imageSmoothingEnabled = false;
 
 export const Draw = new Render(ctx, SCREEN_WIDTH, SCREEN_HEIGHT);

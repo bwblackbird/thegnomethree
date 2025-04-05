@@ -11,3 +11,7 @@ export const HEXAGON_SPRITE = new Sprite(HEXAGON_IMAGE, 6, 1, HEX_SPRITE_WIDTH, 
 export const GNOME_IMAGE = new RenderImage("assets/images/gnome.png");
 export const GNOME_SPRITE = new Sprite(GNOME_IMAGE, 4, 4, 64, 64);
 
+// Coins
+export const COIN_IMAGE = new RenderImage("assets/images/coin.png");
+export const COIN_SPRITE = new Sprite(GNOME_IMAGE, 2, 1, 64, 64);
+

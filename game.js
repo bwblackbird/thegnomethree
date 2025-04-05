@@ -27,6 +27,7 @@ class GameClass {
 		this.objects["Troll"] = {};
 		this.objects["Coin"] = {};
 		this.objects["Wall"] = {};
+		this.objects["Wall"].dontUpdate = true; // Don't update walls
 
 		// Generate map
 		this.map = new Map(levelWidth, levelHeight, this);
@@ -84,6 +85,10 @@ class GameClass {
 		this.map.draw(this.camera);
 		// Objects
 		for (const [id, obj] of Object.entries(this.objects["Player"])) {
+			obj.draw();
+		}
+		
+		for (const [id, obj] of Object.entries(this.objects["Coin"])) {
 			obj.draw();
 		}
 		Draw.pop();
