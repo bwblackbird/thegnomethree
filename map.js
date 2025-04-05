@@ -1,5 +1,5 @@
 import Wall from "./objects/wall.js";
-import { CELLSIZE, MAP_COLUMN_WIDTH, MAP_ROW_HEIGHT } from "./config.js";
+import { CELLSIZE, MAP_COLUMN_WIDTH, MAP_ROW_HEIGHT, HEX_SPRITE_SCALE } from "./config.js";
 
 import { Draw } from "./engine/canvas.js";
 import { HEXAGON_IMAGE, HEXAGON_SPRITE } from "./assets.js";
@@ -75,7 +75,7 @@ export class Map {
 					tileY += MAP_ROW_HEIGHT / 2;
 				}
 				let tileId = this.getCell(x, y, 0);
-				Draw.image(HEXAGON_IMAGE, HEXAGON_SPRITE.getFrame(tileId, 0), tileX, tileY, 0, 1,1, 0.5,0.5);
+				Draw.image(HEXAGON_IMAGE, HEXAGON_SPRITE.getFrame(tileId, 0), tileX, tileY, 0, HEX_SPRITE_SCALE,HEX_SPRITE_SCALE, 0.5,0.5);
 			}
 		}
 	}
