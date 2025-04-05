@@ -28,16 +28,39 @@ export function generateRandomLevel(map, level){
         }
     }
 
-    // Randomly generate spikes
+    // Randomly generate spikes and coins
     for (let y = 0; y < map.h; y++) {
         for (let x = 0; x < map.w; x++) {
             if (map.getCell(x, y, 0) === 0) { 
-                if (Math.random() < (0.02*level)) { 
-                    map.setCell(x, y, 0, 5);
+                if (Math.random() < (0.010*level)) { 
+                    map.setCell(x, y, 0, 5); // spikes 
                 }
             }
         }
     }
+
+    for (let y = 0; y < map.h; y++) {
+        for (let x = 0; x < map.w; x++) {
+            if (map.getCell(x, y, 0) === 0) { 
+                if (Math.random() < 0.03) { 
+                    map.setCell(x, y, 1, 1); // coins
+                }
+            }
+        }
+    }
+
+     // Spawn trolls
+     let trollsCreated = 0;
+
+     while (trollsCreated < (6*Math.log(level))+3) {
+         const trollX = Math.floor(Math.random() * map.w);
+         const trollY = Math.floor(Math.random() * map.h);
+ 
+         if (map.getCell(trollX, trollY, 0) === 0) {
+            map.setCell(trollX, trollY, 1, 2); // Set troll object
+            trollsCreated++;
+         }
+     }
 
     // Convert wall tiles to lava tiles
     function floodFillLava(map, startX, startY, tileType, maxTiles) {
