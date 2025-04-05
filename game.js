@@ -46,7 +46,7 @@ class GameClass {
 		// Generate map
 		this.map = new Map(levelWidth, levelHeight, this);
 
-		generateRandomLevel(this.map);
+		generateRandomLevel(this.map, this.level);
 
 		this.player = this.spawnObject("Player", new Player(this.world, this.map.pixelWidth/2, this.map.pixelHeight/2, this.map));//levelWidth*CELLSIZE/2, levelHeight*CELLSIZE/2));
 		this.player.totalHealth = this.totalHearts;

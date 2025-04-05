@@ -1,4 +1,4 @@
-export function generateRandomLevel(map){
+export function generateRandomLevel(map, level){
     const noise = new SimplexNoise(); 
 
     for (let y = 0; y < map.h; y++) {
@@ -18,7 +18,7 @@ export function generateRandomLevel(map){
     // Replace some walls with lava lakes
     let lakesCreated = 0;
 
-    while (lakesCreated < 3) {
+    while (lakesCreated < (0.4*level)) {
         const lavaX = Math.floor(Math.random() * map.w);
         const lavaY = Math.floor(Math.random() * map.h);
 
@@ -27,7 +27,17 @@ export function generateRandomLevel(map){
             lakesCreated++;
         }
     }
-}
+
+    // Randomly generate spikes
+    for (let y = 0; y < map.h; y++) {
+        for (let x = 0; x < map.w; x++) {
+            if (map.getCell(x, y, 0) === 0) { 
+                if (Math.random() < (0.02*level)) { 
+                    map.setCell(x, y, 0, 5);
+                }
+            }
+        }
+    }
 
     // Convert wall tiles to lava tiles
     function floodFillLava(map, startX, startY, tileType, maxTiles) {
@@ -37,15 +47,18 @@ export function generateRandomLevel(map){
         while (queue.length > 0 && count < maxTiles) {
             const [x, y] = queue.shift();
 
+            if (x < 0 || x >= map.w || y < 0 || y >= map.h) continue; // Out of bounds
+        
             if (map.getCell(x, y, 0) === 1) { // Check if it's a wall
                 map.setCell(x, y, 0, tileType); // Set lava tile
                 count++;
 
-                // Add adjacent cells to the queue
                 queue.push([x + 1, y]);
                 queue.push([x - 1, y]);
                 queue.push([x, y + 1]);
                 queue.push([x, y - 1]);
             }
         }
+    }
+
 }
