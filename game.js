@@ -34,6 +34,8 @@ class GameClass {
 
 		this.player = this.spawnObject("Player", new Player(this.world, this.map.pixelWidth/2, this.map.pixelHeight/2));//levelWidth*CELLSIZE/2, levelHeight*CELLSIZE/2));
 
+		this.map.createMapObjects(this.player);
+
 		this.camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, this.map.pixelWidth, this.map.pixelHeight);
 	};
 
@@ -84,11 +86,15 @@ class GameClass {
 		// Map
 		this.map.draw(this.camera);
 		// Objects
-		for (const [id, obj] of Object.entries(this.objects["Player"])) {
+		for (const [id, obj] of Object.entries(this.objects["Troll"])) {
 			obj.draw();
 		}
 		
 		for (const [id, obj] of Object.entries(this.objects["Coin"])) {
+			obj.draw();
+		}
+
+		for (const [id, obj] of Object.entries(this.objects["Player"])) {
 			obj.draw();
 		}
 		Draw.pop();
