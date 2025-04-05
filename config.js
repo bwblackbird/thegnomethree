@@ -21,6 +21,11 @@ export const PLAYER_SIZE = CELLSIZE * 0.5; // Vertical size of the player
 
 // Coins
 export const COIN_SIZE = CELLSIZE * 0.5; // Width and Height of a coin
+export const COIN_ANIMATION_SPEED = 0.41;
+
+// Trolls
+export const TROLL_SIZE = CELLSIZE * 0.5; // Width and Height of a troll
+export const TROLL_HIT_COOL_DOWN = 0.5;
 
 // Graphics //
 export const IMAGE_SCALE = 2.0; // Scale of all pixel images

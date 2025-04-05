@@ -33,6 +33,8 @@ export default class Player extends Creature {
 
 		// Collectibles
 		this.coins = 0;
+		this.health = 3;
+		this.dead = false;
 
 		this.setPosition(x, y);
 	}
@@ -97,7 +99,6 @@ export default class Player extends Creature {
 	}
 
 	collide(name, obj) {
-		console.log(name);
 		if (name == "Wall") {
 			return true;
 		}
@@ -106,10 +107,20 @@ export default class Player extends Creature {
 			obj.destroy();
 			return false;
 		}
+		if (name = "Troll") {
+			return true;
+		}
 		return false;
 	}
 
 	collectCoin() {
 		this.coins++;
+	}
+
+	hurt(damage) {
+		this.health -= damage;
+		if (this.health <= 0) {
+			this.dead = true;
+		}
 	}
 }
