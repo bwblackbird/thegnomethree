@@ -9,7 +9,7 @@ export const MAP_COLUMN_WIDTH = (Math.sqrt(3) * CELLSIZE) / 2;; // Column spacin
 
 export const HEX_SPRITE_WIDTH = 54; // Width of the hexagon sprite
 export const HEX_SPRITE_HEIGHT = 45; // Height of the hexagon sprite
-export const HEX_SPRITE_SCALE = 3.0; // Scale of the hexagon sprite
+export const HEX_SPRITE_SCALE = 4.0; // Scale of the hexagon sprite
 
 // Level //
 export const LEVEL_WIDTH = 32; // How many hexagon cells horizontally
