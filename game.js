@@ -4,6 +4,7 @@ import { CELLSIZE, LEVEL_WIDTH, LEVEL_HEIGHT } from "./config.js";
 import { Map } from "./map.js";
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from "./config.js";
 import { Camera } from "./camera.js";
+import { generateRandomLevel} from "./randomlevel.js";
 
 import Player from "./objects/player.js";
 
@@ -31,6 +32,8 @@ class GameClass {
 
 		// Generate map
 		this.map = new Map(levelWidth, levelHeight, this);
+
+		generateRandomLevel(this.map);
 
 		this.player = this.spawnObject("Player", new Player(this.world, this.map.pixelWidth/2, this.map.pixelHeight/2));//levelWidth*CELLSIZE/2, levelHeight*CELLSIZE/2));
 
