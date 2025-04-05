@@ -29,7 +29,6 @@ export class Map {
 					0, // Object ID
 					// 0 // Light level
 				];
-
 			}
 		}
 		

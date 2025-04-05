@@ -1,7 +1,7 @@
 import PhysicsObject from './object.js';
 import Shape from '../engine/shape.js';
 import { Draw } from '../engine/canvas.js';
-import { CELLSIZE, TROLL_SIZE, TROLL_HIT_COOL_DOWN, MAP_COLUMN_WIDTH, MAP_ROW_HEIGHT } from "../config.js";
+import { CELLSIZE, TROLL_SIZE, TROLL_HIT_COOL_DOWN, MAP_COLUMN_WIDTH, MAP_ROW_HEIGHT, IMAGE_SCALE } from "../config.js";
 
 import { TROLL_IMAGE, TROLL_SPRITE } from '../assets.js';
 import { Animation } from '../engine/sprite.js';
@@ -119,8 +119,29 @@ export default class Troll extends Creature {
 	}
 
 	draw() {
+		let flip = 1;
+
+
+		// Up
+		if (this.angle > Math.PI * 1.25 || this.angle <= Math.PI * 0.25) {
+			this.animation.setFrame(null, 2);
+		}
+		// Down
+		else if (this.angle > Math.PI * 0.75 && this.angle <= Math.PI * 1.75) {
+			this.animation.setFrame(null, 0);
+		}
+		// Left
+		else if (this.angle > Math.PI * 0.5 && this.angle <= Math.PI * 1.5) {
+			this.animation.setFrame(null, 1);
+			flip = -1;
+		}
+		// Right
+		else {
+			this.animation.setFrame(null, 1);
+		}
+
 		Draw.setColor(255, 255, 255, 1.0);
-		Draw.image(this.image, this.animation.getFrame(), this.x, this.y, 0, 1, 1, 0.5, 0.5);
+		Draw.image(this.image, this.animation.getFrame(), this.x, this.y, 0, IMAGE_SCALE*flip, IMAGE_SCALE, 0.5, 0.5);
 	}
 
 	collide(name, obj) {

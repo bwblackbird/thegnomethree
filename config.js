@@ -15,6 +15,8 @@ export const HEX_SPRITE_SCALE = 2.0; // Scale of the hexagon sprite
 export const LEVEL_WIDTH = 32; // How many hexagon cells horizontally
 export const LEVEL_HEIGHT = 32; // How many hexagon cells vertically
 
+export const LAVA_HIT_COOL_DOWN = 0.35; // Cool down time for lava hurting
+
 // Objects //
 // Player
 export const PLAYER_SIZE = CELLSIZE * 0.5; // Vertical size of the player
