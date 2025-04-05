@@ -4,6 +4,7 @@ import { CELLSIZE, LEVEL_WIDTH, LEVEL_HEIGHT, IMAGE_SCALE } from "./config.js";
 import { Map } from "./map.js";
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from "./config.js";
 import { Camera } from "./camera.js";
+import { generateRandomLevel} from "./randomlevel.js";
 
 import { HUD_FONT, COIN_IMAGE, COIN_SPRITE, HEART_IMAGE, HEART_SPRITE } from "./assets.js";
 
@@ -39,6 +40,8 @@ class GameClass {
 
 		// Generate map
 		this.map = new Map(levelWidth, levelHeight, this);
+
+		generateRandomLevel(this.map);
 
 		this.player = this.spawnObject("Player", new Player(this.world, this.map.pixelWidth/2, this.map.pixelHeight/2));//levelWidth*CELLSIZE/2, levelHeight*CELLSIZE/2));
 		this.player.totalHealth = this.totalHearts;
