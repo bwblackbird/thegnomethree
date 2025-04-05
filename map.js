@@ -1,11 +1,17 @@
 import Wall from "./objects/wall.js";
+import { CELLSIZE, MAP_COLUMN_WIDTH, MAP_ROW_HEIGHT } from "./config.js";
 
-export const CELLSIZE = 180;
+import { Draw } from "./engine/canvas.js";
+import { HEXAGON_IMAGE, HEXAGON_SPRITE } from "./assets.js";
 
 export class Map {
 	constructor(width, height, world) {
 		this.w = width;
 		this.h = height;
+
+		this.pixelWidth = width * MAP_COLUMN_WIDTH;
+		this.pixelHeight = height * MAP_ROW_HEIGHT;
+
 		this.world = world;
 		this.createMap(this.w, this.h);
 	}
@@ -32,10 +38,10 @@ export class Map {
 		if (id == 0) {
 			return; // No wall
 		}
-		let tileX = x * CELLSIZE * 0.9 + (CELLSIZE / 2);
-		let tileY = y * CELLSIZE + (CELLSIZE / 2);
+		let tileX = x * MAP_COLUMN_WIDTH;
+		let tileY = y * MAP_ROW_HEIGHT
 		if (x % 2 == 0) {
-			tileY += CELLSIZE / 2;
+			tileY += MAP_ROW_HEIGHT / 2;
 		}
 		this.world.spawnObject("Wall", new Wall(this.world.world, tileX, tileY));
 	};
@@ -52,5 +58,25 @@ export class Map {
 			return -1; // Out of bounds
 		}
 		return this.map[y][x][i];
+	}
+
+	draw(camera) {
+		// Only render on screen
+		Draw.setColor(255, 255, 255, 1.0);
+		let startX = Math.floor(camera.x / MAP_COLUMN_WIDTH);
+		let startY = Math.floor(camera.y / MAP_ROW_HEIGHT);
+		let endX = Math.ceil((camera.x + camera.viewW) / MAP_COLUMN_WIDTH);
+		let endY = Math.ceil((camera.y + camera.viewH) / MAP_ROW_HEIGHT);
+		for (let y = startY; y <= endY; y++) {
+			for (let x = startX; x <= endX; x++) {
+				let tileX = x * MAP_COLUMN_WIDTH;
+				let tileY = y * MAP_ROW_HEIGHT
+				if (x % 2 == 0) {
+					tileY += MAP_ROW_HEIGHT / 2;
+				}
+				let tileId = this.getCell(x, y, 0);
+				Draw.image(HEXAGON_IMAGE, HEXAGON_SPRITE.getFrame(tileId, 0), tileX, tileY, 0, 1,1, 0.5,0.5);
+			}
+		}
 	}
 }

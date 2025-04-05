@@ -44,7 +44,6 @@ function updatePhysics(objs, spatialHash, dt) {
 								if (isAABBColliding(nx+a.shape.x1,ny+a.shape.y1,nx+a.shape.x2,ny+a.shape.y2,
 									// Time to do polygonal collision check
 									b.x+b.shape.x1,b.y+b.shape.y1,b.x+b.shape.x2,b.y+b.shape.y2)) {
-									console.log("hey", b)
 									let [coll1, moveAxisX, moveAxisY, dist] = checkCollision(a, b, nx, ny)
 									if (coll1) {
 										// Objects are overlapping, if both collision callbacks return true then push
@@ -279,8 +278,8 @@ function drawPhysics(DRAW, objs, spatialHash, offsetX, offsetY) {
 	for (let x = 0; x <= spatialHash.cw; x++) {
 		for (let y = 0; y <= spatialHash.ch; y++) {
 			let cellSize = spatialHash.cellSize
-			DRAW.polygon([x*cellSize,y*cellSize, x*cellSize+cellSize,y*cellSize, x*cellSize+cellSize,y*cellSize+cellSize, x*cellSize,y*cellSize+cellSize], "line")
-			DRAW.text(spatialHash.getCell(x, y).size,x*cellSize+cellSize/2,y*cellSize+cellSize/2)
+			DRAW.polygon([x*cellSize+offsetX,y*cellSize+offsetY, x*cellSize+cellSize+offsetX,y*cellSize+offsetY, x*cellSize+cellSize+offsetX,y*cellSize+cellSize+offsetY, x*cellSize+offsetX,y*cellSize+cellSize+offsetY], "line")
+			DRAW.text(spatialHash.getCell(x, y).size,x*cellSize+cellSize/2+offsetX,y*cellSize+cellSize/2+offsetY)
 		}
 	}
 	// Draw hitboxes
@@ -288,7 +287,7 @@ function drawPhysics(DRAW, objs, spatialHash, offsetX, offsetY) {
 		for (const [i, a] of Object.entries(objsList)) { // Look at each object
 			if (typeof a === "object") {
 				DRAW.push()
-				DRAW.translate(a.x, a.y)
+				DRAW.translate(a.x+offsetX, a.y+offsetY)
 	
 				// Draw object's shape and bounding box
 				DRAW.setColor(0,0,80,1.0)
@@ -296,7 +295,7 @@ function drawPhysics(DRAW, objs, spatialHash, offsetX, offsetY) {
 					DRAW.setColor(255,0,0,1.0)
 				}
 				DRAW.setLineWidth(1)
-				DRAW.rectangle(a.shape.x1-offsetX, a.shape.y1-offsetY, a.shape.w, a.shape.h, "line")
+				DRAW.rectangle(a.shape.x1, a.shape.y1, a.shape.w, a.shape.h, "line")
 				DRAW.setLineWidth(2)
 				DRAW.polygon(a.shape.v, "line")
 	

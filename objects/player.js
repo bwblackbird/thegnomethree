@@ -1,14 +1,17 @@
 import PhysicsObject from './object.js';
 import Shape from '../engine/shape.js';
 import { Draw } from '../engine/canvas.js';
-import { CELLSIZE } from "../map.js";
+import { CELLSIZE, PLAYER_SIZE } from "../config.js";
+
+import { GNOME_IMAGE, GNOME_SPRITE } from '../assets.js';
+import { Animation } from '../engine/sprite.js';
 
 import Creature from './creature.js';
 
 export default class Player extends Creature {
 	constructor(spatialHash, x, y) {
-		super(spatialHash, x, y, CELLSIZE * 0.6, CELLSIZE * 0.6);
-		this.size = CELLSIZE * 0.6;
+		super(spatialHash, x, y, PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE/3);
+		this.size = PLAYER_SIZE;
 		this.x = x;
 		this.y = y;
 
@@ -20,7 +23,10 @@ export default class Player extends Creature {
 			down: false,
 			left: false,
 			right: false,
-		}
+		};
+
+		this.image = GNOME_IMAGE;
+		this.animation = new Animation(GNOME_SPRITE, 0, 0);
 
 		this.speed = 2*CELLSIZE;
 
@@ -48,8 +54,9 @@ export default class Player extends Creature {
 	}
 
 	draw() {
-		Draw.setColor(200, 0, 0);
-		Draw.rectangle(this.x, this.y, this.size, this.size);
+		Draw.setColor(255, 255, 255, 1.0);
+		Draw.image(this.image, this.animation.getFrame(), this.x, this.y, 0, 1, 1, 0.5, 0.5);
+		//Draw.rectangle(this.x-this.size/2, this.y-this.size/2, this.size, this.size);
 	}
 
 	keyPress(key) {

@@ -1,6 +1,6 @@
 import PhysicsObject from './object.js';
 import Shape from '../engine/shape.js';
-import { CELLSIZE } from "../map.js";
+import { CELLSIZE } from "../config.js";
 
 export default class Wall extends PhysicsObject {
 	constructor(spatialHash, x, y) {
@@ -8,7 +8,7 @@ export default class Wall extends PhysicsObject {
 		
 		this.x = x;
 		this.y = y;
-		this.radius = CELLSIZE/2 * 1.2;
+		this.radius = CELLSIZE / Math.sqrt(3);
 
 		// Hexagon shape
 		this.shape = new Shape(...this.getHexagonVertices(x, y, this.radius));

@@ -1,7 +1,9 @@
 import { SpatialHash, updatePhysics, drawPhysics } from "./engine/physics.js";
 import { Draw } from "./engine/canvas.js";
-import { Map, CELLSIZE } from "./map.js";
-import { gameWidth, gameHeight } from "./engine/canvas.js";
+import { CELLSIZE, LEVEL_WIDTH, LEVEL_HEIGHT } from "./config.js";
+import { Map } from "./map.js";
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from "./config.js";
+import { Camera } from "./camera.js";
 
 import Player from "./objects/player.js";
 
@@ -15,8 +17,8 @@ class GameClass {
 	}
 
 	start() {
-		const levelWidth = 64;
-		const levelHeight = 32;
+		const levelWidth = LEVEL_WIDTH;
+		const levelHeight = LEVEL_HEIGHT;
 		this.world = new SpatialHash(levelWidth*CELLSIZE, levelHeight*CELLSIZE, CELLSIZE*8);
 
 		// Object
@@ -29,7 +31,9 @@ class GameClass {
 		// Generate map
 		this.map = new Map(levelWidth, levelHeight, this);
 
-		this.player = this.spawnObject("Player", new Player(this.world, 10, 10));//levelWidth*CELLSIZE/2, levelHeight*CELLSIZE/2));
+		this.player = this.spawnObject("Player", new Player(this.world, this.map.pixelWidth/2, this.map.pixelHeight/2));//levelWidth*CELLSIZE/2, levelHeight*CELLSIZE/2));
+
+		this.camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, this.map.pixelWidth, this.map.pixelHeight);
 	};
 
 	// Register an object as part of the physics world
@@ -64,17 +68,28 @@ class GameClass {
 			}
 		};
 		updatePhysics(this.objects, this.world, dt);
+
+		// Update camera view
+		this.camera.setFocus(this.player.x, this.player.y);
 	}
 
 	draw() {
 		Draw.clear(255, 255, 255, 1.0);
 		Draw.setColor(255, 255, 255, 1.0);
-		Draw.rectangle(0, 0, gameWidth, gameHeight);
-		drawPhysics(Draw, this.objects, this.world, 0, 0);
+		Draw.rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 		
+		Draw.push();
+		Draw.translate(-this.camera.x, -this.camera.y);
+		// Map
+		this.map.draw(this.camera);
+		// Objects
 		for (const [id, obj] of Object.entries(this.objects["Player"])) {
 			obj.draw();
 		}
+		Draw.pop();
+		
+		// DEBUG
+		drawPhysics(Draw, this.objects, this.world, -this.camera.x, -this.camera.y);
 	}
 
 	keyPress(k) {

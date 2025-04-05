@@ -2,7 +2,7 @@ import PhysicsObject from './object.js';
 import Shape from '../engine/shape.js';
 
 export default class Creature extends PhysicsObject {
-	constructor(spatialHash, x, y, w, h) {
+	constructor(spatialHash, x, y, w, h, bevel) {
 		super(spatialHash, x, y);
 		
 		this.x = x;
@@ -10,12 +10,26 @@ export default class Creature extends PhysicsObject {
 		this.w = w;
 		this.h = h;
 
-		this.shape = new Shape(
-			0, 0,
-			w, 0,
-			w, h,
-			0, h
-		);
+		// bevel hitbox so you slide into doorways
+		if (bevel !== 0) {
+			this.shape = new Shape(
+				-this.w/2, -this.h/2+bevel,
+				-this.w/2+bevel, -this.h/2,
+				this.w/2-bevel, -this.h/2,
+				this.w/2, -this.h/2+bevel,
+				this.w/2, this.h/2-bevel,
+				this.w/2-bevel, this.h/2,
+				-this.w/2+bevel, this.h/2,
+				-this.w/2, this.h/2-bevel
+			)
+		} else {
+			this.shape = new Shape(
+				-this.w/2, -this.h/2,
+				-this.w/2, this.h/2,
+				this.w/2, this.h/2,
+				this.w/2, -this.h/2
+			)
+		}
 
 		this.static = false;
 		this.active = true;

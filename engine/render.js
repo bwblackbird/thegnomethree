@@ -377,7 +377,6 @@ class RenderImage {
 		this.src = src
 		this.w = 1
 		this.h = 1
-		LoadingScreen.wait(this)
 		this.image.onload = () => {
 			this.w = this.image.width
 			this.h = this.image.height
