@@ -17,6 +17,9 @@ class GameClass {
 	load() {
 		this.level = 1;
 
+		this.totalHearts = 3;
+		this.hearts = this.totalHearts;
+
 		this.start();
 	}
 
@@ -32,11 +35,14 @@ class GameClass {
 		this.objects["Coin"] = {};
 		this.objects["Wall"] = {};
 		this.objects["Wall"].dontUpdate = true; // Don't update walls
+		this.objects["Exit"] = {};
 
 		// Generate map
 		this.map = new Map(levelWidth, levelHeight, this);
 
 		this.player = this.spawnObject("Player", new Player(this.world, this.map.pixelWidth/2, this.map.pixelHeight/2));//levelWidth*CELLSIZE/2, levelHeight*CELLSIZE/2));
+		this.player.totalHealth = this.totalHearts;
+		this.player.health = this.player.totalHealth;
 
 		this.map.createMapObjects(this.player);
 
@@ -78,6 +84,16 @@ class GameClass {
 
 		// Update camera view
 		this.camera.setFocus(this.player.x, this.player.y);
+
+		// Update light
+		// let lightSources = [];
+		// for (const [id, obj] of Object.entries(this.objects["Player"])) {
+		// 	lightSources.push(obj);
+		// }
+		// for (const [id, obj] of Object.entries(this.objects["Troll"])) {
+		// 	lightSources.push(obj);
+		// }
+		// this.map.updateLight(lightSources);
 	}
 
 	draw() {
@@ -101,6 +117,10 @@ class GameClass {
 		for (const [id, obj] of Object.entries(this.objects["Player"])) {
 			obj.draw();
 		}
+
+		for (const [id, obj] of Object.entries(this.objects["Exit"])) {
+			obj.draw();
+		}
 		Draw.pop();
 		
 		// DEBUG
@@ -117,9 +137,10 @@ class GameClass {
 			if (heart >= this.player.health) {
 				frame = HEART_SPRITE.getFrame(1,0);
 			}
-			console.log("get");
 			Draw.image(HEART_IMAGE, frame, 70 + heart*70, 70, 0, IMAGE_SCALE, IMAGE_SCALE, 0.5, 0.75);
 		}
+
+		Draw.text(`Level ${this.level}`, SCREEN_WIDTH/2, 70, "center");
 	}
 
 	keyPress(k) {

@@ -15,6 +15,10 @@ export const GNOME_SPRITE = new Sprite(GNOME_IMAGE, 4, 4, 64, 64);
 export const COIN_IMAGE = new RenderImage("assets/images/coin.png");
 export const COIN_SPRITE = new Sprite(GNOME_IMAGE, 2, 1, 32, 32, 0,0, 1,1);
 
+// Exit
+export const EXIT_IMAGE = new RenderImage("assets/images/exit.png");
+export const EXIT_SPRITE = new Sprite(EXIT_IMAGE, 1, 1, 32, 32, 0,0, 1,1);
+
 // Trolls
 export const TROLL_IMAGE = new RenderImage("assets/images/troll.png");
 export const TROLL_SPRITE = new Sprite(TROLL_IMAGE, 4, 4, 64, 64);
