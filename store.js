@@ -3,7 +3,8 @@ import StateManager from './engine/state.js';
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from './config.js';
 import { RenderFont } from './engine/render.js';
 import { Draw } from "./engine/canvas.js";
-import { STORE_IMAGE, SMALL_HUD_FONT } from "./assets.js";
+import { STORE_IMAGE, SMALL_HUD_FONT, STORE_MUSIC } from "./assets.js";
+import AudioSystem from './engine/audio.js';
 
 import { ITEMS } from "./items.js";
 
@@ -21,6 +22,7 @@ class StoreClass {
 	this.selection = 0;
 	this.selections = this.items.length; // number of selections (last is continue)
 
+	AudioSystem.playMusic(STORE_MUSIC);
   }
 
   update(dt) {
@@ -115,6 +117,7 @@ class StoreClass {
   }
 
   exit() {
+	AudioSystem.stopMusic();
 	StateManager.setState(Game, "resume");
   }
 }
