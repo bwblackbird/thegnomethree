@@ -51,7 +51,7 @@ export default class Troll extends Creature {
 
 	update(dt) {
 		// Chase target (Player)
-		let canChase = false;
+		this.canChase = false;
 		if (this.target && !this.target.dead) {
 			let tx = this.target.x;
 			let ty = this.target.y;
@@ -77,7 +77,7 @@ export default class Troll extends Creature {
 					this.angle = Math.atan2(dy, dx);
 					this.sx = Math.cos(this.angle) * this.speed;
 					this.sy = Math.sin(this.angle) * this.speed;
-					canChase = true;
+					this.canChase = true;
 				}
 
 				this.oldTileX = tileX;
@@ -97,7 +97,7 @@ export default class Troll extends Creature {
 			}
 		}
 
-		if (!canChase) {
+		if (!this.canChase) {
 			// Idle
 			if (this.idleTimer > 0) {
 				this.sx = 0;
