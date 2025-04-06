@@ -32,5 +32,9 @@ export const TROLL_HIT_COOL_DOWN = 1.0;
 // Exit
 export const EXIT_SIZE = CELLSIZE * 0.5; // Width and Height of the exit
 
+// Bullet
+export const BULLET_SIZE = CELLSIZE * 0.4; // Width and Height of the bullet
+export const BULLET_SPEED = 5 * CELLSIZE; // Speed of the bullet
+
 // Graphics //
 export const IMAGE_SCALE = 2.0; // Scale of all pixel images

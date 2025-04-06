@@ -3,6 +3,7 @@ import Wall from "./objects/wall.js";
 import Coin from "./objects/coin.js";
 import Troll from "./objects/troll.js";
 import Exit from "./objects/exit.js";
+import GuntherWOLong from "./objects/gunther.js";
 
 import { Draw } from "./engine/canvas.js";
 import { HEXAGON_IMAGE, HEXAGON_SPRITE } from "./assets.js";
@@ -51,7 +52,7 @@ export class Map {
 			tileY += MAP_ROW_HEIGHT / 2;
 		}
 
-		if (tileId === 1) {
+		if (tileId === 1 || tileId === 2) {
 			this.world.spawnObject("Wall", new Wall(this.world.world, tileX, tileY));
 		}
 
@@ -66,7 +67,12 @@ export class Map {
 		} else if (objectId === 3) {
 			// Exit
 			this.world.spawnObject("Exit", new Exit(this.world.world, tileX, tileY));
+		} else if (objectId === 4) {
+			// Gunther
+			console.log("Gunther spawned at: ", tileX, tileY);
+			this.world.spawnObject("Troll", new GuntherWOLong(this.world.world, tileX, tileY, this, player, this.world));
 		}
+
 	};
 
 	setCell(x, y, layer, id) {

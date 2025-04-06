@@ -38,6 +38,7 @@ class GameClass {
 		this.objects = [];
 		this.objects["Player"] = {};
 		this.objects["Troll"] = {};
+		this.objects["Bullet"] = {};
 		this.objects["Coin"] = {};
 		this.objects["Wall"] = {};
 		this.objects["Wall"].dontUpdate = true; // Don't update walls
@@ -47,6 +48,7 @@ class GameClass {
 		this.map = new Map(levelWidth, levelHeight, this);
 
 		generateRandomLevel(this.map, this.level);
+		this.map.setCell(14,14,1,4);
 
 		this.player = this.spawnObject("Player", new Player(this.world, this.map.pixelWidth/2, this.map.pixelHeight/2, this.map));//levelWidth*CELLSIZE/2, levelHeight*CELLSIZE/2));
 		this.player.totalHealth = this.totalHearts;
@@ -131,6 +133,9 @@ class GameClass {
 		}
 
 		for (const [id, obj] of Object.entries(this.objects["Exit"])) {
+			obj.draw();
+		}
+		for (const [id, obj] of Object.entries(this.objects["Bullet"])) {
 			obj.draw();
 		}
 		Draw.pop();
