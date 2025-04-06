@@ -1,10 +1,10 @@
 
 
-import { Game } from './game.js';
+import { Title } from './title.js';
 import StateManager from './engine/state.js';
 import './engine/input.js';
 
-StateManager.setState(Game)
+StateManager.setState(Title);
 
 var FPS = 0
 var lastTimestamp = 0

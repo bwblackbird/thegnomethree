@@ -84,7 +84,6 @@ export class Map {
 			// Gunther
 			this.world.spawnObject("Troll", new GuntherWOLong(this.world.world, tileX, tileY, this, player, this.world));
 		} else if (objectId === 5) {
-			console.log("Spawn point", x, y);
 			this.spawnX = x;
 			this.spawnY = y;
 		}

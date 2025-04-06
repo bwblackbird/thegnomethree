@@ -37,6 +37,7 @@ export const HEART_IMAGE = new RenderImage("assets/images/heart.png");
 export const HEART_SPRITE = new Sprite(HEART_IMAGE, 2, 1, 32, 32, 0,0, 0,0);
 
 // Backgrounds
+export const TITLE_IMAGE = new RenderImage("assets/images/title.png");
 export const WIN_IMAGE = new RenderImage("assets/images/win.png");
 export const LOSE_IMAGE = new RenderImage("assets/images/lose.png");
 export const STORE_IMAGE = new RenderImage("assets/images/store.png");

@@ -93,7 +93,6 @@ export default class Troll extends Creature {
 					this.sx = Math.cos(this.angle) * this.speed;
 					this.sy = Math.sin(this.angle) * this.speed;
 					this.canChase = true;
-					console.log(this.angle);
 				}
 
 				this.oldTileX = tileX;
