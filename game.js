@@ -61,7 +61,6 @@ class GameClass {
 
 		generateRandomLevel(this.map, this.level);
 
-		console.log(this.map.spawnX, this.map.spawnY);
 		let spawnX = this.map.w/2;
 		let spawnY = this.map.h/2;
 		this.map.findSpawn();
