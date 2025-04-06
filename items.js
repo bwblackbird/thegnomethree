@@ -2,7 +2,7 @@ import { Game } from "./game.js";
 
 export const ITEMS = [
 	{
-		name: "Mushroom",
+		name: "Red Mushroom",
 		cost: 1,
 		effect: ()=> {
 			Game.health++;
@@ -10,12 +10,13 @@ export const ITEMS = [
 		description: "This curious fungus restores your health."
 	},
 	{
-		name: "Big Mushroom",
-		cost: 2,
+		name: "Heart Mushroom",
+		cost: 5,
 		effect: ()=> {
 			Game.totalHealth++;
+			Game.health++;
 		},
-		description: "Increases max health."
+		description: "This mushroom cures you and makes you grow another extra heart."
 	},
 	{
 		name: "Jewel",
@@ -24,5 +25,29 @@ export const ITEMS = [
 			Game.coins += 2;
 		},
 		description: "A very valuable jewel."
+	},
+	{
+		name: "Lava-Proof Boots",
+		cost: 3,
+		effect: ()=> {
+			Game.powerUp = 3;
+		},
+		description: "You can walk on lava with these."
+	},
+	{
+		name: "Poison Immunity Potion",
+		cost: 2,
+		effect: ()=> {
+			Game.powerUp = 4;
+		},
+		description: "This potion protects you from poison!"
+	},
+	{
+		name: "Spike Shoes",
+		cost: 2,
+		effect: ()=> {
+			Game.powerUp = 5;
+		},
+		description: "These shoes protect you from spikes."
 	},
 ]

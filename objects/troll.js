@@ -42,7 +42,8 @@ export default class Troll extends Creature {
 
 		// Graphics
 		this.image = TROLL_IMAGE;
-		this.animation = new Animation(TROLL_SPRITE, 0, 0);
+		this.sprite = TROLL_SPRITE;
+		this.animation = new Animation(this.sprite, 0, 0);
 
 		this.wiggle = 0;
 		this.wiggleSpeed = 5;
@@ -71,7 +72,7 @@ export default class Troll extends Creature {
 				let cast = this.oldCastResult;
 				if (tileX !== this.oldTileX || tileY !== this.oldTileY || targetTileX !== this.oldTargetTileX || targetTileY !== this.oldTargetTileY) {
 					// Cast ray only if the target has moved
-					cast = this.map.castRay(this.x, this.y, tx, ty);
+					cast = this.map.castRay(this.x  + MAP_COLUMN_WIDTH/2, this.y + MAP_ROW_HEIGHT/2, tx  + MAP_COLUMN_WIDTH/2, ty + MAP_ROW_HEIGHT/2);
 					this.oldCastResult = cast;
 				}
 
@@ -126,6 +127,16 @@ export default class Troll extends Creature {
 			this.wiggle = (this.wiggle + this.wiggleSpeed*dt)%1;
 		} else {
 			this.wiggle = 0;
+		}
+
+		// get current tile
+		let tileX = Math.floor((this.x + MAP_COLUMN_WIDTH/2) / MAP_COLUMN_WIDTH);
+		let tileY = Math.floor((this.y + MAP_ROW_HEIGHT/2) / MAP_ROW_HEIGHT);
+
+		let tile = this.map.getCell(tileX, tileY, 0);
+		if (tile == 5) {
+			// die from spikes
+			this.destroy();
 		}
 	}
 

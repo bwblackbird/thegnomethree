@@ -2,6 +2,7 @@ import Troll from './troll.js';
 import { GUNTHER_IMAGE, GUNTHER_SPRITE } from '../assets.js';
 
 import Bullet from './bullet.js';
+import { Animation } from '../engine/sprite.js';
 
 export default class GuntherWOLong extends Troll {
 	constructor(spatialHash, x, y, map, target, world) {
@@ -13,6 +14,8 @@ export default class GuntherWOLong extends Troll {
 		this.world = world;
 
 		this.image = GUNTHER_IMAGE;
+		this.sprite = GUNTHER_SPRITE;
+		this.animation = new Animation(this.sprite, 0, 0);
 	}
 
 	update(dt) {

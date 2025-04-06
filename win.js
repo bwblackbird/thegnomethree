@@ -3,6 +3,7 @@ import StateManager from './engine/state.js';
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from './config.js';
 import { RenderFont } from './engine/render.js';
 import { Draw } from "./engine/canvas.js";
+import { WIN_IMAGE } from "./assets.js";
 
 class WinClass {
   constructor() {
@@ -20,8 +21,8 @@ class WinClass {
   }
 
   draw() {
-	Draw.setColor(0, 0, 0, 1.0);
-	Draw.rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	Draw.setColor(255, 255, 255, 1.0);
+	Draw.image(WIN_IMAGE, null, 0, 0, 0, 2, 2);
 
 	Draw.setColor(255, 255, 255, 1.0);
 	Draw.setFont(this.font);
@@ -36,7 +37,7 @@ class WinClass {
   }
 
   keyPress() {
-	StateManager.setState(Game);
+	// StateManager.setState(Game);
   }
 }
 

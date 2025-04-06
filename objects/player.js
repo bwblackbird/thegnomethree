@@ -107,7 +107,9 @@ export default class Player extends Creature {
 		let tileY = Math.floor((this.y + MAP_ROW_HEIGHT/2) / MAP_ROW_HEIGHT);
 
 		let tile = this.map.getCell(tileX, tileY, 0);
-		if (tile == 3 || tile == 4 || tile == 5) {
+		if ((tile == 3 && this.powerUp !== 3) || // Lava
+			(tile == 4 && this.powerUp !== 4) || // Poison
+			(tile == 5 && this.powerUp !== 5)) { // Spikes
 			// Lava
 			this.lavaHitTimer -= dt;
 			if (this.lavaHitTimer <= 0) {
