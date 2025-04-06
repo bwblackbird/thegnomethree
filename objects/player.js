@@ -1,7 +1,17 @@
 import PhysicsObject from './object.js';
 import Shape from '../engine/shape.js';
 import { Draw } from '../engine/canvas.js';
-import { CELLSIZE, PLAYER_SIZE, IMAGE_SCALE, MAP_COLUMN_WIDTH, MAP_ROW_HEIGHT, LAVA_HIT_COOL_DOWN } from "../config.js";
+import {
+	CELLSIZE,
+	PLAYER_SIZE,
+	IMAGE_SCALE,
+	MAP_COLUMN_WIDTH,
+	MAP_ROW_HEIGHT,
+	LAVA_HIT_COOL_DOWN,
+	PLAYER_BOUNCE_SPEED,
+	PLAYER_BOUNCE_HEIGHT,
+	PLAYER_SPEED
+} from "../config.js";
 
 import { GNOME_IMAGE, GNOME_SPRITE } from '../assets.js';
 import { Animation } from '../engine/sprite.js';
@@ -25,7 +35,7 @@ export default class Player extends Creature {
 			left: false,
 			right: false,
 		};
-		this.speed = 2*CELLSIZE;
+		this.speed = PLAYER_SPEED;
 
 		this.map = map;
 		this.lavaHitTimer = 0;
@@ -38,6 +48,9 @@ export default class Player extends Creature {
 		this.light = 8;
 
 		this.angle = 0;
+		
+		this.bounce = 0;
+		this.bounceHeight = PLAYER_BOUNCE_HEIGHT;
 
 		// Collectibles
 		this.coins = 0;
@@ -81,8 +94,12 @@ export default class Player extends Creature {
 		this.sx = sx * this.speed;
 		this.sy = sy * this.speed;
 
+		// Animation
 		if (!(this.sx == 0 && this.sy == 0)) {
 			this.angle = Math.atan2(this.sy, this.sx);
+			this.bounce = (this.bounce + PLAYER_BOUNCE_SPEED*dt)%1;
+		} else {
+			this.bounce = 0;
 		}
 
 		// get current tile
@@ -121,7 +138,7 @@ export default class Player extends Creature {
 			this.animation.setFrame(null, 0);
 		}
 
-		Draw.image(this.image, this.animation.getFrame(), this.x, this.y, 0, IMAGE_SCALE*flip, IMAGE_SCALE, 0.5, 0.7);
+		Draw.image(this.image, this.animation.getFrame(), this.x, this.y-Math.sin(this.bounce*Math.PI)*this.bounceHeight, 0, IMAGE_SCALE*flip, IMAGE_SCALE, 0.5, 0.7);
 	}
 
 	keyPress(key) {
@@ -142,6 +159,9 @@ export default class Player extends Creature {
 				this.hurt(1);
 				break;
 			case "9":
+				this.exit("noStore");
+				break;
+			case "8":
 				this.exit();
 				break;
 		}
@@ -198,14 +218,14 @@ export default class Player extends Creature {
 		console.log("Player died");
 		this.dead = true;
 		if (this.loseCallback) {
-			this.loseCallback(this);
+			this.loseCallback();
 		}
 	}
 
-	exit() {
+	exit(noStore) {
 		console.log("Player used exit");
 		if (this.winCallback) {
-			this.winCallback(this);
+			this.winCallback(noStore);
 		}
 	}
 }

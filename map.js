@@ -69,7 +69,6 @@ export class Map {
 			this.world.spawnObject("Exit", new Exit(this.world.world, tileX, tileY));
 		} else if (objectId === 4) {
 			// Gunther
-			console.log("Gunther spawned at: ", tileX, tileY);
 			this.world.spawnObject("Troll", new GuntherWOLong(this.world.world, tileX, tileY, this, player, this.world));
 		}
 

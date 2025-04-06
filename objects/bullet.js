@@ -45,7 +45,6 @@ export default class Bullet extends PhysicsObject {
 	}
 
 	collide(name, obj) {
-		console.log(name);
 		if (name == "Troll" || name == "GuntherWOLong") {
 			return false;
 		}
