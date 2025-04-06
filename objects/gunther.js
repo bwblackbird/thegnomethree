@@ -19,7 +19,9 @@ export default class GuntherWOLong extends Troll {
 	}
 
 	update(dt) {
-		super.update(dt);
+		if (super.update(dt)) {
+			return true;
+		}
 
 		if (this.canChase) {
 			this.shootTimer -= dt;

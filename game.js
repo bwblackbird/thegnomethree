@@ -1,6 +1,6 @@
 import { SpatialHash, updatePhysics, drawPhysics } from "./engine/physics.js";
 import { Draw } from "./engine/canvas.js";
-import { CELLSIZE, LEVEL_WIDTH, LEVEL_HEIGHT, IMAGE_SCALE, BONUS_TIME } from "./config.js";
+import { CELLSIZE, LEVEL_WIDTH, LEVEL_HEIGHT, IMAGE_SCALE, BONUS_TIME, MAP_COLUMN_WIDTH, MAP_ROW_HEIGHT } from "./config.js";
 import { Map } from "./map.js";
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from "./config.js";
 import { Camera } from "./camera.js";
@@ -61,7 +61,14 @@ class GameClass {
 
 		generateRandomLevel(this.map, this.level);
 
-		this.player = this.spawnObject("Player", new Player(this.world, this.map.pixelWidth/2, this.map.pixelHeight/2, this.map));//levelWidth*CELLSIZE/2, levelHeight*CELLSIZE/2));
+		let spawnX = this.map.w/2;
+		let spawnY = this.map.h/2;
+		if (this.map.spawnX !== undefined) {
+			spawnX = this.map.spawnX;
+			spawnY = this.map.spawnY;
+		}
+
+		this.player = this.spawnObject("Player", new Player(this.world, spawnX*MAP_COLUMN_WIDTH, spawnY*MAP_ROW_HEIGHT, this.map));//levelWidth*CELLSIZE/2, levelHeight*CELLSIZE/2));
 		this.player.totalHealth = this.totalHealth;
 		this.player.coins = this.coins;
 		this.player.health = this.player.totalHealth;
@@ -201,7 +208,7 @@ class GameClass {
 		// Tutorial
 		if (this.level == 1) {
 			Draw.setColor(255, 255, 255, 1.0);
-			Draw.text("Collect coins and find the ladder!", SCREEN_WIDTH/2, SCREEN_HEIGHT - 50, "center", 0, 1, 1);
+			Draw.text("Collect coins and find the ladder! Move with arrow keys.", SCREEN_WIDTH/2, SCREEN_HEIGHT - 50, "center", 0, 1, 1);
 		}
 	}
 
