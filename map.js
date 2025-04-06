@@ -70,6 +70,9 @@ export class Map {
 		} else if (objectId === 4) {
 			// Gunther
 			this.world.spawnObject("Troll", new GuntherWOLong(this.world.world, tileX, tileY, this, player, this.world));
+		} else if (objectId === 5) {
+			this.spawnX = tileX;
+			this.spawnY = tileY;
 		}
 
 	};

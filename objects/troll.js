@@ -51,10 +51,20 @@ export default class Troll extends Creature {
 
 		this.light = 3;
 
+		this.dead = false;
+
 		this.setPosition(x, y);
 	}
 
 	update(dt) {
+		if (this.dead) {
+			this.deadTimer -= dt;
+			if (this.deadTimer <= 0) {
+				this.destroy();
+			}
+			return true;
+		}
+
 		// Chase target (Player)
 		this.canChase = false;
 		if (this.target && !this.target.dead) {
@@ -136,7 +146,8 @@ export default class Troll extends Creature {
 		let tile = this.map.getCell(tileX, tileY, 0);
 		if (tile == 5) {
 			// die from spikes
-			this.destroy();
+			this.die();
+			return true;
 		}
 	}
 
@@ -162,8 +173,13 @@ export default class Troll extends Creature {
 			this.animation.setFrame(null, 1);
 		}
 
+		let rotation = 0;
+		if (this.dead) {
+			rotation = Math.PI/2;
+		}
+
 		Draw.setColor(255, 255, 255, 1.0);
-		Draw.image(this.image, this.animation.getFrame(), this.x, this.y-20, Math.sin(this.wiggle*Math.PI*2)*this.wiggleStrength, IMAGE_SCALE*flip, IMAGE_SCALE, 0.5, 0.65);
+		Draw.image(this.image, this.animation.getFrame(), this.x, this.y-20, Math.sin(this.wiggle*Math.PI*2)*this.wiggleStrength+rotation, IMAGE_SCALE*flip, IMAGE_SCALE, 0.5, 0.65);
 	}
 
 	collide(name, obj) {
@@ -177,5 +193,12 @@ export default class Troll extends Creature {
 			return false;
 		}
 		return false;
+	}
+
+	die() {
+		this.dead = true;
+		this.active = false;
+		this.static = true;
+		this.deadTimer = 3.0;
 	}
 }
