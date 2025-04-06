@@ -51,10 +51,20 @@ export default class Troll extends Creature {
 
 		this.light = 3;
 
+		this.dead = false;
+
 		this.setPosition(x, y);
 	}
 
 	update(dt) {
+		if (this.dead) {
+			this.deadTimer -= dt;
+			if (this.deadTimer <= 0) {
+				this.destroy();
+			}
+			return true;
+		}
+
 		// Chase target (Player)
 		this.canChase = false;
 		if (this.target && !this.target.dead) {
@@ -83,6 +93,7 @@ export default class Troll extends Creature {
 					this.sx = Math.cos(this.angle) * this.speed;
 					this.sy = Math.sin(this.angle) * this.speed;
 					this.canChase = true;
+					console.log(this.angle);
 				}
 
 				this.oldTileX = tileX;
@@ -136,7 +147,8 @@ export default class Troll extends Creature {
 		let tile = this.map.getCell(tileX, tileY, 0);
 		if (tile == 5) {
 			// die from spikes
-			this.destroy();
+			this.die();
+			return true;
 		}
 	}
 
@@ -145,25 +157,30 @@ export default class Troll extends Creature {
 
 
 		// Up
-		if (this.angle > Math.PI * 1.25 || this.angle <= Math.PI * 0.25) {
+		if (this.angle > -Math.PI * 0.75 && this.angle < -Math.PI * 0.25) {
 			this.animation.setFrame(null, 2);
 		}
 		// Down
-		else if (this.angle > Math.PI * 0.75 && this.angle <= Math.PI * 1.75) {
-			this.animation.setFrame(null, 0);
+		else if (this.angle > -Math.PI * 0.25 && this.angle <= Math.PI * 0.25) {
+			this.animation.setFrame(null, 1);
 		}
 		// Left
-		else if (this.angle > Math.PI * 0.5 && this.angle <= Math.PI * 1.5) {
+		else if (this.angle < -Math.PI * 0.75 || this.angle > Math.PI * 0.75) {
 			this.animation.setFrame(null, 1);
 			flip = -1;
 		}
 		// Right
 		else {
-			this.animation.setFrame(null, 1);
+			this.animation.setFrame(null, 0);
+		}
+
+		let rotation = 0;
+		if (this.dead) {
+			rotation = Math.PI/2;
 		}
 
 		Draw.setColor(255, 255, 255, 1.0);
-		Draw.image(this.image, this.animation.getFrame(), this.x, this.y-20, Math.sin(this.wiggle*Math.PI*2)*this.wiggleStrength, IMAGE_SCALE*flip, IMAGE_SCALE, 0.5, 0.65);
+		Draw.image(this.image, this.animation.getFrame(), this.x, this.y-20, Math.sin(this.wiggle*Math.PI*2)*this.wiggleStrength+rotation, IMAGE_SCALE*flip, IMAGE_SCALE, 0.5, 0.65);
 	}
 
 	collide(name, obj) {
@@ -177,5 +194,12 @@ export default class Troll extends Creature {
 			return false;
 		}
 		return false;
+	}
+
+	die() {
+		this.dead = true;
+		this.active = false;
+		this.static = true;
+		this.deadTimer = 3.0;
 	}
 }

@@ -34,6 +34,19 @@ export class Map {
 		}
 	}
 
+	findSpawn() {
+		for (let y = 0; y < this.h; y++) {
+			for (let x = 0; x < this.w; x++) {
+				if (this.getCell(x, y, 1) === 5) {
+					this.spawnX = x;
+					this.spawnY = y;
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	createMapObjects(player) {
 		for (let y = 0; y < this.h; y++) {
 			for (let x = 0; x < this.w; x++) {
@@ -70,6 +83,10 @@ export class Map {
 		} else if (objectId === 4) {
 			// Gunther
 			this.world.spawnObject("Troll", new GuntherWOLong(this.world.world, tileX, tileY, this, player, this.world));
+		} else if (objectId === 5) {
+			console.log("Spawn point", x, y);
+			this.spawnX = x;
+			this.spawnY = y;
 		}
 
 	};

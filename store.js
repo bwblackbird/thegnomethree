@@ -3,7 +3,7 @@ import StateManager from './engine/state.js';
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from './config.js';
 import { RenderFont } from './engine/render.js';
 import { Draw } from "./engine/canvas.js";
-import { STORE_IMAGE } from "./assets.js";
+import { STORE_IMAGE, SMALL_HUD_FONT } from "./assets.js";
 
 import { ITEMS } from "./items.js";
 
@@ -67,6 +67,11 @@ class StoreClass {
 
 	// HUD
 	Game.drawHUD();
+
+	// Tutorial
+	Draw.setFont(SMALL_HUD_FONT, 4);
+	Draw.setColor(255, 255, 255, 1.0);
+	Draw.text("Move with arrow keys. Select with Enter key or spacebar.", SCREEN_WIDTH/2, SCREEN_HEIGHT - 20, "center", 0, 1, 1);
   }
 
   keyPress(key) {
