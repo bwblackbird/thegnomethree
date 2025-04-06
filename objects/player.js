@@ -159,6 +159,9 @@ export default class Player extends Creature {
 				this.hurt(1);
 				break;
 			case "9":
+				this.exit("noStore");
+				break;
+			case "8":
 				this.exit();
 				break;
 		}
@@ -215,14 +218,14 @@ export default class Player extends Creature {
 		console.log("Player died");
 		this.dead = true;
 		if (this.loseCallback) {
-			this.loseCallback(this);
+			this.loseCallback();
 		}
 	}
 
-	exit() {
+	exit(noStore) {
 		console.log("Player used exit");
 		if (this.winCallback) {
-			this.winCallback(this);
+			this.winCallback(noStore);
 		}
 	}
 }

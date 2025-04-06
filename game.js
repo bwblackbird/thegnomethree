@@ -8,6 +8,7 @@ import StateManager from './engine/state.js';
 import { generateRandomLevel} from "./randomlevel.js";
 import { Win } from "./win.js";
 import { Lose } from "./lose.js";
+import { Store } from "./store.js";
 
 import { HUD_FONT, COIN_IMAGE, COIN_SPRITE, HEART_IMAGE, HEART_SPRITE } from "./assets.js";
 
@@ -18,13 +19,18 @@ class GameClass {
 
 	};
 
-	load() {
-		this.level = 1;
+	load(resume) {
+		if (!resume) {
+			// Start fresh
+			this.level = 1;
 
-		this.time = 0; // Total time played
+			this.time = 0; // Total time played
 
-		this.totalHearts = 3;
-		this.hearts = this.totalHearts;
+			this.totalHealth = 3;
+			this.health = this.totalHealth;
+
+			this.coins = 0;
+		}
 
 		this.start();
 	}
@@ -48,10 +54,10 @@ class GameClass {
 		this.map = new Map(levelWidth, levelHeight, this);
 
 		generateRandomLevel(this.map, this.level);
-		this.map.setCell(14,14,1,4);
 
 		this.player = this.spawnObject("Player", new Player(this.world, this.map.pixelWidth/2, this.map.pixelHeight/2, this.map));//levelWidth*CELLSIZE/2, levelHeight*CELLSIZE/2));
-		this.player.totalHealth = this.totalHearts;
+		this.player.totalHealth = this.totalHealth;
+		this.player.coins = this.coins;
 		this.player.health = this.player.totalHealth;
 		this.player.winCallback = this.nextLevel.bind(this);
 		this.player.loseCallback = this.lose.bind(this);
@@ -144,6 +150,10 @@ class GameClass {
 		//drawPhysics(Draw, this.objects, this.world, -this.camera.x, -this.camera.y);
 
 		// HUD
+		this.drawHUD();
+	}
+
+	drawHUD() {
 		Draw.setColor(255, 255, 255, 1.0);
 		Draw.setFont(HUD_FONT, 10);
 		Draw.text(`X ${this.player.coins}`, SCREEN_WIDTH - 120, 70);
@@ -168,13 +178,21 @@ class GameClass {
 		this.player.keyRelease(k);
 	}
 
-	nextLevel() {
+	nextLevel(noStore) {
 		this.level++;
+
+		this.coins = this.player.coins;
+		this.health = this.player.health;
+		this.totalHealth = this.player.totalHealth;
 
 		if (this.level > 10) {
 			StateManager.setState(Win, this.time);
 		} else {
-			this.start();
+			if (noStore) {
+				this.start();
+			} else {
+				StateManager.setState(Store);
+			}
 		}
 	}
 
