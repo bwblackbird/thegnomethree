@@ -1,6 +1,6 @@
 import { RenderImage, RenderFont } from './engine/render.js'
 import { Sprite } from './engine/sprite.js'
-import AudioSystem from '../engine/audio.js';
+import AudioSystem from './engine/audio.js';
 
 import { HEX_SPRITE_WIDTH, HEX_SPRITE_HEIGHT } from './config.js';
 
