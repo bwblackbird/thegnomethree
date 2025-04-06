@@ -32,13 +32,6 @@ export class Map {
 				];
 			}
 		}
-		
-		// Randomly spawn exit
-		let exitX = Math.floor(Math.random() * w);
-		let exitY = Math.floor(Math.random() * h);
-		this.setCell(exitX, exitY, 1, 3); // Exit object
-		this.setCell(exitX, exitY, 0, 0);
-		console.log("Exit spawned at: ", exitX, exitY);
 	}
 
 	createMapObjects(player) {
