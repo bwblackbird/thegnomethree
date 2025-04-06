@@ -1,6 +1,6 @@
 import { SpatialHash, updatePhysics, drawPhysics } from "./engine/physics.js";
 import { Draw } from "./engine/canvas.js";
-import { CELLSIZE, LEVEL_WIDTH, LEVEL_HEIGHT, IMAGE_SCALE } from "./config.js";
+import { CELLSIZE, LEVEL_WIDTH, LEVEL_HEIGHT, IMAGE_SCALE, BONUS_TIME } from "./config.js";
 import { Map } from "./map.js";
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from "./config.js";
 import { Camera } from "./camera.js";
@@ -10,6 +10,7 @@ import { Win } from "./win.js";
 import { Lose } from "./lose.js";
 import { Store } from "./store.js";
 import { ITEMS } from "./items.js";
+import { formatTime } from "./lib/time.js";
 
 import { HUD_FONT, SMALL_HUD_FONT, COIN_IMAGE, COIN_SPRITE, HEART_IMAGE, HEART_SPRITE } from "./assets.js";
 
@@ -34,6 +35,8 @@ class GameClass {
 
 			this.powerUp = false; // Item ID
 		}
+		this.levelTime = 0; // Time played in this level
+		this.levelCoins = 0;
 
 		this.start();
 	}
@@ -68,7 +71,7 @@ class GameClass {
 
 		this.map.createMapObjects(this.player);
 
-		this.camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, this.map.pixelWidth, this.map.pixelHeight);
+		this.camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, this.map.pixelWidth, this.map.pixelHeight + CELLSIZE/2);
 	};
 
 	// Register an object as part of the physics world
@@ -85,6 +88,7 @@ class GameClass {
 
 	update(dt) {
 		this.time += dt;
+		this.levelTime += dt;
 
 		for (const [name, objList] of Object.entries(this.objects)) {
 			let keysToDelete;
@@ -160,9 +164,11 @@ class GameClass {
 	drawHUD() {
 		Draw.setColor(255, 255, 255, 1.0);
 		Draw.setFont(HUD_FONT, 10);
+		// Coins
 		Draw.text(`X ${this.player.coins}`, SCREEN_WIDTH - 120, 70);
 		Draw.image(COIN_IMAGE, COIN_SPRITE.getFrame(0,0), SCREEN_WIDTH - 160, 70, 0, IMAGE_SCALE, IMAGE_SCALE, 0.5, 0.75);
 
+		// Health hearts
 		for (let heart = 0; heart < this.player.totalHealth; heart++) {
 			let frame = HEART_SPRITE.getFrame(0,0);
 			if (heart >= this.player.health) {
@@ -171,13 +177,31 @@ class GameClass {
 			Draw.image(HEART_IMAGE, frame, 70 + heart*70, 70, 0, IMAGE_SCALE, IMAGE_SCALE, 0.5, 0.75);
 		}
 
+		// Level display
+		Draw.setFont(HUD_FONT, 10);
 		Draw.text(`Level ${this.level}`, SCREEN_WIDTH/2, 70, "center");
 
 		Draw.setFont(SMALL_HUD_FONT, 4);
+		// Powerup item display
 		if (this.powerUp) {
 			let item = ITEMS[this.powerUp];
 			Draw.setColor(255, 255, 255, 1.0);
 			Draw.text(`Item: ${item.name}`, 40, 120, "left", 0, 1, 1);
+		}
+
+		// Time
+		if (this.levelTime > 0) {
+			Draw.setColor(255, 255, 255, 1.0);
+			Draw.text(`Time: ${formatTime(this.levelTime)}`, SCREEN_WIDTH - 40, 120, "right", 0, 1, 1);
+			if (this.levelTime < BONUS_TIME) {
+				Draw.text(`X2 coin bonus under ${formatTime(BONUS_TIME)}!`, SCREEN_WIDTH - 40, 140, "right", 0, 1, 1);
+			}
+		}
+
+		// Tutorial
+		if (this.level == 1) {
+			Draw.setColor(255, 255, 255, 1.0);
+			Draw.text("Collect coins and find the ladder!", SCREEN_WIDTH/2, SCREEN_HEIGHT - 50, "center", 0, 1, 1);
 		}
 	}
 
@@ -196,10 +220,19 @@ class GameClass {
 		this.health = this.player.health;
 		this.totalHealth = this.player.totalHealth;
 
+		// Coin bonus
+		this.levelCoins = this.player.levelCoins;
+		if (this.levelTime < BONUS_TIME) {
+			this.coins += this.levelCoins; // 2X coins!
+		}
+
+		this.levelTime = 0;
+		this.levelCoins = 0;
+
 		this.powerUp = false;
 
 		if (this.level > 10) {
-			StateManager.setState(Win, this.time);
+			StateManager.setState(Win, this.time, this.coins);
 		} else {
 			if (noStore) {
 				this.start();

@@ -41,3 +41,7 @@ export const BULLET_SPEED = 3 * CELLSIZE; // Speed of the bullet
 
 // Graphics //
 export const IMAGE_SCALE = 2.0; // Scale of all pixel images
+
+// Bonus
+export const BONUS_TIME = 20;
+export const BONUS_COINS = 10;
