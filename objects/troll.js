@@ -3,8 +3,9 @@ import Shape from '../engine/shape.js';
 import { Draw } from '../engine/canvas.js';
 import { CELLSIZE, TROLL_SIZE, TROLL_HIT_COOL_DOWN, MAP_COLUMN_WIDTH, MAP_ROW_HEIGHT, IMAGE_SCALE } from "../config.js";
 
-import { TROLL_IMAGE, TROLL_SPRITE } from '../assets.js';
+import { TROLL_IMAGE, TROLL_SPRITE, TROLL_DEATH_SOUND } from '../assets.js';
 import { Animation } from '../engine/sprite.js';
+import AudioSystem from '../engine/audio.js';
 
 import Creature from './creature.js';
 
@@ -200,5 +201,6 @@ export default class Troll extends Creature {
 		this.active = false;
 		this.static = true;
 		this.deadTimer = 3.0;
+		AudioSystem.playSound(TROLL_DEATH_SOUND);
 	}
 }

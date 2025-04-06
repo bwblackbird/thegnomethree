@@ -13,8 +13,9 @@ import {
 	PLAYER_SPEED
 } from "../config.js";
 
-import { GNOME_IMAGE, GNOME_SPRITE } from '../assets.js';
+import { GNOME_IMAGE, GNOME_SPRITE, COIN_SOUND } from '../assets.js';
 import { Animation } from '../engine/sprite.js';
+import AudioSystem from '../engine/audio.js';
 
 import Creature from './creature.js';
 
@@ -225,6 +226,7 @@ export default class Player extends Creature {
 	collectCoin() {
 		this.coins++;
 		this.levelCoins++;
+		AudioSystem.playSound(COIN_SOUND);
 	}
 
 	hurt(damage) {

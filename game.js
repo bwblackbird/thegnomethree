@@ -11,8 +11,9 @@ import { Lose } from "./lose.js";
 import { Store } from "./store.js";
 import { ITEMS } from "./items.js";
 import { formatTime } from "./lib/time.js";
+import AudioSystem from './engine/audio.js';
 
-import { HUD_FONT, SMALL_HUD_FONT, COIN_IMAGE, COIN_SPRITE, HEART_IMAGE, HEART_SPRITE } from "./assets.js";
+import { HUD_FONT, SMALL_HUD_FONT, COIN_IMAGE, COIN_SPRITE, HEART_IMAGE, HEART_SPRITE, LEVEL_MUSIC } from "./assets.js";
 
 import Player from "./objects/player.js";
 
@@ -83,6 +84,7 @@ class GameClass {
 		this.map.createMapObjects(this.player);
 
 		this.camera = new Camera(SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, this.map.pixelWidth, this.map.pixelHeight + CELLSIZE/2);
+		AudioSystem.playMusic(LEVEL_MUSIC);
 	};
 
 	// Register an object as part of the physics world
@@ -225,6 +227,7 @@ class GameClass {
 	}
 
 	nextLevel(noStore) {
+		AudioSystem.stopMusic();
 		this.level++;
 
 		this.coins = this.player.coins;
@@ -254,6 +257,7 @@ class GameClass {
 	}
 
 	lose() {
+		AudioSystem.stopMusic();
 		StateManager.setState(Lose, this.level);
 	}
 }

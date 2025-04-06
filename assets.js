@@ -1,5 +1,6 @@
 import { RenderImage, RenderFont } from './engine/render.js'
 import { Sprite } from './engine/sprite.js'
+import AudioSystem from '../engine/audio.js';
 
 import { HEX_SPRITE_WIDTH, HEX_SPRITE_HEIGHT } from './config.js';
 
@@ -41,3 +42,9 @@ export const TITLE_IMAGE = new RenderImage("assets/images/title.png");
 export const WIN_IMAGE = new RenderImage("assets/images/win.png");
 export const LOSE_IMAGE = new RenderImage("assets/images/lose.png");
 export const STORE_IMAGE = new RenderImage("assets/images/store.png");
+
+// Sounds
+export const LEVEL_MUSIC = AudioSystem.newMusic("assets/audio/spazzmatica-polka.mp3");
+export const STORE_MUSIC = AudioSystem.newMusic("assets/audio/arcadia.mp3");
+export const COIN_SOUND = AudioSystem.newSound("assets/audio/Yahoo.mp3");
+export const TROLL_DEATH_SOUND = AudioSystem.newSound("assets/audio/Hehehe.mp3");
