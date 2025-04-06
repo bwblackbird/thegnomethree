@@ -61,11 +61,16 @@ class GameClass {
 
 		generateRandomLevel(this.map, this.level);
 
+		console.log(this.map.spawnX, this.map.spawnY);
 		let spawnX = this.map.w/2;
 		let spawnY = this.map.h/2;
+		this.map.findSpawn();
 		if (this.map.spawnX !== undefined) {
 			spawnX = this.map.spawnX;
 			spawnY = this.map.spawnY;
+			if (spawnX%2 == 0) {
+				spawnY -= 0.5;
+			}
 		}
 
 		this.player = this.spawnObject("Player", new Player(this.world, spawnX*MAP_COLUMN_WIDTH, spawnY*MAP_ROW_HEIGHT, this.map));//levelWidth*CELLSIZE/2, levelHeight*CELLSIZE/2));
