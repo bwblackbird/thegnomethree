@@ -17,11 +17,11 @@ export const COIN_SPRITE = new Sprite(GNOME_IMAGE, 2, 1, 32, 32, 0,0, 1,1);
 
 // Bullet
 export const BULLET_IMAGE = new RenderImage("assets/images/bullet.png");
-export const BULLET_SPRITE = new Sprite(GNOME_IMAGE, 1, 1, 4, 4, 0,0, 1,1);
+export const BULLET_SPRITE = new Sprite(GNOME_IMAGE, 1, 1, 32, 32, 0,0, 1,1);
 
 // Exit
 export const EXIT_IMAGE = new RenderImage("assets/images/exit.png");
-export const EXIT_SPRITE = new Sprite(EXIT_IMAGE, 1, 1, 32, 32, 0,0, 1,1);
+export const EXIT_SPRITE = new Sprite(EXIT_IMAGE, 1, 1, 45, 32, 0,0, 1,1);
 
 // Trolls
 export const TROLL_IMAGE = new RenderImage("assets/images/troll.png");

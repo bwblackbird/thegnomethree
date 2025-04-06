@@ -92,13 +92,25 @@ export function generateRandomLevel(map, level) {
     // Spawn trolls
     let trollsCreated = 0;
 
-     while (trollsCreated < (6*Math.log(level))+3) {
+     while (trollsCreated < (1*Math.log(level))+3) {
         const trollX = Math.floor(Math.random() * map.w);
         const trollY = Math.floor(Math.random() * map.h);
 
         if (map.getCell(trollX, trollY, 0) === 0) {
             map.setCell(trollX, trollY, 1, 2); // Set troll object
             trollsCreated++;
+        }
+    }
+
+    let gunthersCreated = 1;
+
+     while (gunthersCreated < (level)) {
+        const guntherX = Math.floor(Math.random() * map.w);
+        const guntherY = Math.floor(Math.random() * map.h);
+
+        if (map.getCell(guntherX, guntherY, 0) === 0) {
+            map.setCell(guntherX, guntherY, 1, 4); // Set gunther object
+            gunthersCreated++;
         }
     }
 
