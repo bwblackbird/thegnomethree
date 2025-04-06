@@ -1,11 +1,13 @@
 export function generateRandomLevel(map, level){
-    const noise = new SimplexNoise(); 
-
+    const noise = new SimplexNoise();
+    
     for (let y = 0; y < map.h; y++) {
         for (let x = 0; x < map.w; x++) {
             let value = noise.noise2D(x / 5, y / 5); // scale of noise
-            
-            if (value > 0.1) {
+
+            if (x === 0 || y === 0 || x === map.w - 1 || y === map.h - 1) {
+                map.setCell(x, y, 0, 1); // Set the exterior boundaries
+            } else if (value > 0.1) {
                 map.setCell(x, y, 0, 1); // Set wall
             } else if (value > 0.09) {
                 map.setCell(x, y, 0, 4); // Set poison
@@ -84,4 +86,20 @@ export function generateRandomLevel(map, level){
         }
     }
 
+    // Spawn exit at least 20 cells away from the spawn point at (32,32)
+    let exitX, exitY;
+    let exitPlaced = false;
+    
+    while (!exitPlaced) {
+        exitX = Math.floor(Math.random() * map.w);
+        exitY = Math.floor(Math.random() * map.h);
+    
+        if (Math.abs(exitX - 32) >= 20 && Math.abs(exitY - 32) >= 20) {
+            if (map.getCell(exitX, exitY, 0) === 0) { 
+                map.setCell(exitX, exitY, 1, 3); 
+                console.log("Exit spawned at: ", exitX, exitY);
+                exitPlaced = true; 
+            }
+        }
+    }
 }
