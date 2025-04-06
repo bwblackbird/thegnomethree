@@ -48,6 +48,7 @@ export default class Player extends Creature {
 		this.light = 8;
 
 		this.angle = 0;
+		this.scale = 1.0;
 		
 		this.bounce = 0;
 		this.bounceHeight = PLAYER_BOUNCE_HEIGHT;
@@ -58,6 +59,7 @@ export default class Player extends Creature {
 		this.totalHealth = 3;
 		this.health = this.totalHealth;
 		this.dead = false;
+		this.deadTimer = 0.8;
 
 		// Callbacks
 		this.winCallback = null;
@@ -67,9 +69,15 @@ export default class Player extends Creature {
 	}
 
 	update(dt) {
+		this.scale = Math.max(1.0, this.scale - dt);
+
 		if (this.dead) {
 			this.sx = 0;
 			this.sy = 0;
+			this.deadTimer -= dt;
+			if (this.deadTimer <= 0) {
+				this.rot();
+			}
 			return;
 		}
 
@@ -141,10 +149,18 @@ export default class Player extends Creature {
 			this.animation.setFrame(null, 0);
 		}
 
-		Draw.image(this.image, this.animation.getFrame(), this.x, this.y-Math.sin(this.bounce*Math.PI)*this.bounceHeight, 0, IMAGE_SCALE*flip, IMAGE_SCALE, 0.5, 0.7);
+		let rotation = 0;
+		if (this.dead) {
+			rotation = Math.PI/2;
+		}
+
+		Draw.image(this.image, this.animation.getFrame(), this.x, this.y-Math.sin(this.bounce*Math.PI)*this.bounceHeight, rotation, IMAGE_SCALE*flip*this.scale, IMAGE_SCALE*this.scale, 0.5, 0.7);
 	}
 
 	keyPress(key) {
+		if (this.dead) {
+			return;
+		}
 		switch (key) {
 			case "ArrowUp":
 				this.buttons.up = true;
@@ -213,14 +229,19 @@ export default class Player extends Creature {
 
 	hurt(damage) {
 		this.health -= damage;
+		this.scale = 1.2;
 		if (this.health <= 0) {
 			this.die();
+			return;
 		}
 	}
 
 	die() {
 		console.log("Player died");
 		this.dead = true;
+	}
+
+	rot() {
 		if (this.loseCallback) {
 			this.loseCallback();
 		}
