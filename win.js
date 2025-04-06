@@ -3,7 +3,8 @@ import StateManager from './engine/state.js';
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from './config.js';
 import { RenderFont } from './engine/render.js';
 import { Draw } from "./engine/canvas.js";
-import { WIN_IMAGE } from "./assets.js";
+import { WIN_IMAGE, COIN_SOUND } from "./assets.js";
+import AudioSystem from './engine/audio.js';
 
 import { formatTime } from "./lib/time.js";
 
@@ -25,6 +26,8 @@ class WinClass {
 	}
 	this.highscore = Math.floor(Math.max(this.highscore, this.time));
 	localStorage.setItem("highestcoins", this.highscore);
+
+	AudioSystem.playSound(COIN_SOUND);
   }
 
   update(dt) {
@@ -54,6 +57,7 @@ class WinClass {
   }
 
   keyPress() {
+	AudioSystem.playSound(COIN_SOUND);
 	// StateManager.setState(Game);
   }
 }

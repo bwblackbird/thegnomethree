@@ -25,7 +25,7 @@ class TitleClass {
 	Draw.setColor(255, 255, 255, 1.0);
 	Draw.setFont(HUD_FONT, 8);
 	if (this.timer < 0.5) {
-	  Draw.text("Press any key to start!", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 180, "center");
+	  Draw.text("Press any key to start!", SCREEN_WIDTH / 2- 200, SCREEN_HEIGHT / 2 + 180, "center");
 	}
   }
 
