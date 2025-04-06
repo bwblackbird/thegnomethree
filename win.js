@@ -5,13 +5,16 @@ import { RenderFont } from './engine/render.js';
 import { Draw } from "./engine/canvas.js";
 import { WIN_IMAGE } from "./assets.js";
 
+import { formatTime } from "./lib/time.js";
+
 class WinClass {
   constructor() {
 	this.font = new RenderFont("Arial", 40);
   }
 
-  load(time) {
+  load(time, coins) {
 	this.time = time;
+	this.coins = coins;
 
 	this.timer = 0;
   }
@@ -30,10 +33,10 @@ class WinClass {
 	Draw.text("You Win!", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, "center", 0, scale, scale);
 
 	// Fromat time to mm:ss
-	let minutes = Math.floor(this.time / 60);
-	let seconds = Math.floor(this.time % 60);
-	let time = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-	Draw.text(`Total time: ${time}`, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50, "center");
+	Draw.text(`Total time: ${formatTime(this.time)}`, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 50, "center");
+
+	// Coins
+	Draw.text(`Total coins: ${this.coins}`, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 100, "center");
   }
 
   keyPress() {

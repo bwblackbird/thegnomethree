@@ -9,49 +9,49 @@ class StateManagerClass {
 	constructor() {
 
 	}
-	setState(state, args) {
-		state.load(args)
-		game_state = state
-		game_state_name = game_state.name
+	setState(state, ...args) {
+		state.load(...args);
+		game_state = state;
+		game_state_name = game_state.name;
 	}
 
 	getState() {
-		return game_state_name
+		return game_state_name;
 	}
 
 	update(dt) {
-		game_state.update(dt)
+		game_state.update(dt);
 	}
 
 	draw() {
-		game_state.draw()
+		game_state.draw();
 	}
 
 	keyPress(key, code) {
 		if (game_state.keyPress) {
-			game_state.keyPress(key, code)
+			game_state.keyPress(key, code);
 		}
 	}
 	keyRelease(key, code) {
 		if (game_state.keyRelease) {
-			game_state.keyRelease(key, code)
+			game_state.keyRelease(key, code);
 		}
 	}
 
 	click(button, x, y) {
 		if (game_state.mouseClick) {
-			game_state.mouseClick(button, x, y)
+			game_state.mouseClick(button, x, y);
 		}
 	}
 	clickRelease(button, x, y) {
 		if (game_state.mouseRelease) {
-			game_state.mouseRelease(button, x, y)
+			game_state.mouseRelease(button, x, y);
 		}
 	}
 
 	stateScroll(dy) {
 		if (game_state.mouseScroll) {
-			game_state.mouseScroll(dy)
+			game_state.mouseScroll(dy);
 		}
 	}
 }

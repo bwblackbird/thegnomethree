@@ -54,6 +54,7 @@ export default class Player extends Creature {
 
 		// Collectibles
 		this.coins = 0;
+		this.levelCoins = 0;
 		this.totalHealth = 3;
 		this.health = this.totalHealth;
 		this.dead = false;
@@ -207,6 +208,7 @@ export default class Player extends Creature {
 
 	collectCoin() {
 		this.coins++;
+		this.levelCoins++;
 	}
 
 	hurt(damage) {
