@@ -56,7 +56,7 @@ export function generateRandomLevel(map, level) {
     }
 
     // Replace some walls with lava lakes
-    let lakesCreated = 0;
+    let lakesCreated = 1;
 
     while (lakesCreated < (0.4*level)) {
         const lavaX = Math.floor(Math.random() * map.w);
@@ -92,7 +92,7 @@ export function generateRandomLevel(map, level) {
     // Spawn trolls
     let trollsCreated = 0;
 
-     while (trollsCreated < (1*Math.log(level))+3) {
+     while (trollsCreated < (4*Math.log(level))+3) {
         const trollX = Math.floor(Math.random() * map.w);
         const trollY = Math.floor(Math.random() * map.h);
 
@@ -102,7 +102,7 @@ export function generateRandomLevel(map, level) {
         }
     }
 
-    let gunthersCreated = 1;
+    let gunthersCreated = 2;
 
      while (gunthersCreated < (level)) {
         const guntherX = Math.floor(Math.random() * map.w);
