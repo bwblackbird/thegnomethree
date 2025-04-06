@@ -3,6 +3,7 @@ import StateManager from './engine/state.js';
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from './config.js';
 import { RenderFont } from './engine/render.js';
 import { Draw } from "./engine/canvas.js";
+import { STORE_IMAGE } from "./assets.js";
 
 import { ITEMS } from "./items.js";
 
@@ -13,13 +14,10 @@ class StoreClass {
 
   load() {
 	this.items = [];
-	this.stock = [];
 	for (let i = 0; i < 3; i++) {
 		this.items.push(Math.floor(Math.random() * ITEMS.length));
-		this.stock.push(1);
 	}
 	this.items.push(-1); // last item is continue
-	this.stock.push(1); // last item is continue
 	this.selection = 0;
 	this.selections = this.items.length; // number of selections (last is continue)
 
@@ -30,8 +28,8 @@ class StoreClass {
   }
 
   draw() {
-	Draw.setColor(0, 0, 0, 1.0);
-	Draw.rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+	Draw.setColor(255, 255, 255, 1.0);
+	Draw.image(STORE_IMAGE, null, 0, 0, 0, 2, 2);
 
 	Draw.setColor(255, 255, 255, 1.0);
 	Draw.setFont(this.font);
@@ -50,9 +48,9 @@ class StoreClass {
 			text = "Continue";
 		} else {
 			let item = ITEMS[this.items[i]];
-			text = `Item ${item.name} (${item.cost} Coin)`;
+			text = `${item.name} (${item.cost} Coin)`;
 		}
-		Draw.text(text, 400, 320 + i*50, "left", 0, 1, 1);
+		Draw.text(text, 450, 320 + i*50, "left", 0, 1, 1);
 	}
 
 	// Item description
@@ -73,24 +71,27 @@ class StoreClass {
 
   keyPress(key) {
 	switch (key) {
-	  case "Enter":
-		this.buy(this.items[this.selection]);
-		break;
-	  case "Escape":
-		StateManager.setState(Game, "resume");
-		break;
-	  case "ArrowUp":
-		this.selection--;
-		if (this.selection < 0) {
-		  this.selection = this.items.length - 1;
-		}
-		break;
-	  case "ArrowDown":
-		this.selection++;
-		if (this.selection >= this.items.length) {
-		  this.selection = 0;
-		}
-		break;
+		case "Enter":
+			this.buy(this.items[this.selection]);
+			break;
+		case " ":
+			this.buy(this.items[this.selection]);
+			break;
+		case "Escape":
+			StateManager.setState(Game, "resume");
+			break;
+		case "ArrowUp":
+			this.selection--;
+			if (this.selection < 0) {
+			this.selection = this.items.length - 1;
+			}
+			break;
+		case "ArrowDown":
+			this.selection++;
+			if (this.selection >= this.items.length) {
+			this.selection = 0;
+			}
+			break;
 	}
   }
 
@@ -101,9 +102,8 @@ class StoreClass {
 	}
 
 	let item = ITEMS[id];
-	if (this.stock[id] > 0 && Game.coins > 0) {
+	if (Game.coins >= item.cost) {
 		Game.coins = Game.coins - item.cost;
-		this.stock[id]--;
 		item.effect();
 		this.exit();
 	}

@@ -9,8 +9,9 @@ import { generateRandomLevel} from "./randomlevel.js";
 import { Win } from "./win.js";
 import { Lose } from "./lose.js";
 import { Store } from "./store.js";
+import { ITEMS } from "./items.js";
 
-import { HUD_FONT, COIN_IMAGE, COIN_SPRITE, HEART_IMAGE, HEART_SPRITE } from "./assets.js";
+import { HUD_FONT, SMALL_HUD_FONT, COIN_IMAGE, COIN_SPRITE, HEART_IMAGE, HEART_SPRITE } from "./assets.js";
 
 import Player from "./objects/player.js";
 
@@ -30,6 +31,8 @@ class GameClass {
 			this.health = this.totalHealth;
 
 			this.coins = 0;
+
+			this.powerUp = false; // Item ID
 		}
 
 		this.start();
@@ -61,6 +64,7 @@ class GameClass {
 		this.player.health = this.player.totalHealth;
 		this.player.winCallback = this.nextLevel.bind(this);
 		this.player.loseCallback = this.lose.bind(this);
+		this.player.powerUp = this.powerUp;
 
 		this.map.createMapObjects(this.player);
 
@@ -168,6 +172,13 @@ class GameClass {
 		}
 
 		Draw.text(`Level ${this.level}`, SCREEN_WIDTH/2, 70, "center");
+
+		Draw.setFont(SMALL_HUD_FONT, 4);
+		if (this.powerUp) {
+			let item = ITEMS[this.powerUp];
+			Draw.setColor(255, 255, 255, 1.0);
+			Draw.text(`Item: ${item.name}`, 40, 120, "left", 0, 1, 1);
+		}
 	}
 
 	keyPress(k) {
@@ -184,6 +195,8 @@ class GameClass {
 		this.coins = this.player.coins;
 		this.health = this.player.health;
 		this.totalHealth = this.player.totalHealth;
+
+		this.powerUp = false;
 
 		if (this.level > 10) {
 			StateManager.setState(Win, this.time);
