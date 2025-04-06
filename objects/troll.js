@@ -44,6 +44,10 @@ export default class Troll extends Creature {
 		this.image = TROLL_IMAGE;
 		this.animation = new Animation(TROLL_SPRITE, 0, 0);
 
+		this.wiggle = 0;
+		this.wiggleSpeed = 5;
+		this.wiggleStrength = 0.1;
+
 		this.light = 3;
 
 		this.setPosition(x, y);
@@ -116,6 +120,13 @@ export default class Troll extends Creature {
 				}
 			}
 		}
+
+		// Animation
+		if (!(this.sx == 0 && this.sy == 0)) {
+			this.wiggle = (this.wiggle + this.wiggleSpeed*dt)%1;
+		} else {
+			this.wiggle = 0;
+		}
 	}
 
 	draw() {
@@ -141,7 +152,7 @@ export default class Troll extends Creature {
 		}
 
 		Draw.setColor(255, 255, 255, 1.0);
-		Draw.image(this.image, this.animation.getFrame(), this.x, this.y, 0, IMAGE_SCALE*flip, IMAGE_SCALE, 0.5, 0.5);
+		Draw.image(this.image, this.animation.getFrame(), this.x, this.y-20, Math.sin(this.wiggle*Math.PI*2)*this.wiggleStrength, IMAGE_SCALE*flip, IMAGE_SCALE, 0.5, 0.65);
 	}
 
 	collide(name, obj) {

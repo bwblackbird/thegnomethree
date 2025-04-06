@@ -20,6 +20,9 @@ export const LAVA_HIT_COOL_DOWN = 0.35; // Cool down time for lava hurting
 // Objects //
 // Player
 export const PLAYER_SIZE = CELLSIZE * 0.5; // Vertical size of the player
+export const PLAYER_SPEED = 2 * CELLSIZE; // Speed of the player
+export const PLAYER_BOUNCE_HEIGHT = CELLSIZE * 0.1; // Bounce height of the player
+export const PLAYER_BOUNCE_SPEED = 5; // Speed of the player
 
 // Coins
 export const COIN_SIZE = CELLSIZE * 0.5; // Width and Height of a coin
@@ -34,7 +37,7 @@ export const EXIT_SIZE = CELLSIZE * 0.5; // Width and Height of the exit
 
 // Bullet
 export const BULLET_SIZE = CELLSIZE * 0.4; // Width and Height of the bullet
-export const BULLET_SPEED = 5 * CELLSIZE; // Speed of the bullet
+export const BULLET_SPEED = 3 * CELLSIZE; // Speed of the bullet
 
 // Graphics //
 export const IMAGE_SCALE = 2.0; // Scale of all pixel images
