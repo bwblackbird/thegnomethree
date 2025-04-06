@@ -10,6 +10,21 @@ export function generateRandomLevel(map, level) {
 
     let spawnX, spawnY;
 
+    // Generate level map
+    for (let y = 0; y < map.h; y++) {
+        for (let x = 0; x < map.w; x++) {
+            let value = noise.noise2D(x / 5, y / 5); // scale of noise
+
+            if (x === 0 || y === 0 || x === map.w - 1 || y === map.h - 1) {
+                map.setCell(x, y, 0, 1); // Set the exterior boundaries
+            } else if (value > 0.3) {
+                map.setCell(x, y, 0, 1); // Set wall
+            } else {
+                map.setCell(x, y, 0, 0); // Set floor
+            }
+        }
+    }
+
     function findLargestSafeArea(map) {
         const visited = new Set();
         let largestRegion = [];
@@ -74,21 +89,6 @@ export function generateRandomLevel(map, level) {
         }
     } else {
         console.error("No large enough safe region found!");
-    }
-
-    // Generate level map
-    for (let y = 0; y < map.h; y++) {
-        for (let x = 0; x < map.w; x++) {
-            let value = noise.noise2D(x / 5, y / 5); // scale of noise
-
-            if (x === 0 || y === 0 || x === map.w - 1 || y === map.h - 1) {
-                map.setCell(x, y, 0, 1); // Set the exterior boundaries
-            } else if (value > 0.3) {
-                map.setCell(x, y, 0, 1); // Set wall
-            } else {
-                map.setCell(x, y, 0, 0); // Set floor
-            }
-        }
     }
 
     // Replace some walls with lava lakes
