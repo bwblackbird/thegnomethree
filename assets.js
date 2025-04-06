@@ -26,7 +26,7 @@ export const EXIT_SPRITE = new Sprite(EXIT_IMAGE, 1, 1, 45, 32, 0,0, 1,1);
 
 // Trolls
 export const TROLL_IMAGE = new RenderImage("assets/images/troll.png");
-export const TROLL_SPRITE = new Sprite(TROLL_IMAGE, 4, 4, 64, 64, 0,0, 1,1);
+export const TROLL_SPRITE = new Sprite(TROLL_IMAGE, 2, 4, 64, 64, 0,0, 1,1);
 
 export const GUNTHER_IMAGE = new RenderImage("assets/images/gunther.png");
 export const GUNTHER_SPRITE = new Sprite(GUNTHER_IMAGE, 4, 4, 70, 64);

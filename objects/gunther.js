@@ -10,6 +10,7 @@ export default class GuntherWOLong extends Troll {
 
 		this.shootDelay = 1;
 		this.shootTimer = this.shootDelay;
+		this.shotTimer = 0;
 
 		this.world = world;
 
@@ -30,6 +31,13 @@ export default class GuntherWOLong extends Troll {
 				this.shoot(this.angle);
 			}
 		}
+
+		this.shotTimer = Math.max(0, this.shotTimer - dt);
+		if (this.shotTimer > 0) {
+			this.animation.setFrame(1, null);
+		} else {
+			this.animation.setFrame(0, null);
+		}
 	}
 
 	draw() {
@@ -38,5 +46,6 @@ export default class GuntherWOLong extends Troll {
 
 	shoot(angle) {
 		this.world.spawnObject("Bullet", new Bullet(this.spatialHash, this.x, this.y, angle));
+		this.shotTimer = 0.2;
 	}
 }
