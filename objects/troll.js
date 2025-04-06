@@ -93,6 +93,7 @@ export default class Troll extends Creature {
 					this.sx = Math.cos(this.angle) * this.speed;
 					this.sy = Math.sin(this.angle) * this.speed;
 					this.canChase = true;
+					console.log(this.angle);
 				}
 
 				this.oldTileX = tileX;
@@ -156,21 +157,21 @@ export default class Troll extends Creature {
 
 
 		// Up
-		if (this.angle > Math.PI * 1.25 || this.angle <= Math.PI * 0.25) {
+		if (this.angle > -Math.PI * 0.75 && this.angle < -Math.PI * 0.25) {
 			this.animation.setFrame(null, 2);
 		}
 		// Down
-		else if (this.angle > Math.PI * 0.75 && this.angle <= Math.PI * 1.75) {
-			this.animation.setFrame(null, 0);
+		else if (this.angle > -Math.PI * 0.25 && this.angle <= Math.PI * 0.25) {
+			this.animation.setFrame(null, 1);
 		}
 		// Left
-		else if (this.angle > Math.PI * 0.5 && this.angle <= Math.PI * 1.5) {
+		else if (this.angle < -Math.PI * 0.75 || this.angle > Math.PI * 0.75) {
 			this.animation.setFrame(null, 1);
 			flip = -1;
 		}
 		// Right
 		else {
-			this.animation.setFrame(null, 1);
+			this.animation.setFrame(null, 0);
 		}
 
 		let rotation = 0;
